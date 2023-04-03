@@ -16,4 +16,5 @@ typedef struct {
 } lex_component;
 
 void syntax(char * param);
+
 #endif //CALCULATORBF_SYNTAX_H
