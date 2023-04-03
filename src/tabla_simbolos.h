@@ -2,15 +2,19 @@
 #ifndef DCOMPILER_TABLA_SIMBOLOS_H
 #define DCOMPILER_TABLA_SIMBOLOS_H
 
-#include "definiciones.h"
+#include "syntax.h"
 
-/**
- * Busca un elemento en la tabla de simbolos.
- *  Si el elemento existe, se devuelve su valor.
- *  Si no existe, se inserta en la tabla y se devuelve su valor.
- * @param elem -> Elemento a buscar
- */
-void table_search(tipoelem * elem);
+lex_component table_lexSearch(char * lexeme);
+
+lex_component table_functSeach(char * funct, void * lib, char * functionLib);
+
+void table_insert(lex_component component);
+
+void table_reassignLexeme(char * lexeme, double val);
+
+void table_resetWorkSpace();
+
+void table_printWorkSpace();
 
 /**
  * Inicializa la tabla de simbolos a los simbolos iniciales

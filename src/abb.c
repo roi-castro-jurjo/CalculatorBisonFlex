@@ -15,7 +15,7 @@ struct celda {
 
 /*Extraer la clave de una celda */
 tipoclave _clave_elem(tipoelem *E) {
-    return E->ID;
+    return E->lex;
 }
 
 /* Esta funcion puente nos permite modificar el tipo de
@@ -40,7 +40,7 @@ void destruir(abb *A) {
     if (*A != NULL) {
         destruir(&(*A)->izq);
         destruir(&(*A)->der);
-        free((*A)->info.ID);
+        free((*A)->info.lex);
         free(*A);
         *A = NULL;
     }
@@ -113,14 +113,7 @@ void buscar_nodo(abb A, tipoclave cl, tipoelem *nodo) {
 }
 
 void print(abb A){
-    tipoelem elem;
-    if (!es_vacio(A)){
-        print(izq(A));
-        leer(A, &elem);
-        printf("╠════════════╬═════╣\n");
-        printf("║ %-10s ║ %03d ║\n", elem.ID, elem.val);
-        print(der(A));
-    }
+    printf("Falta por implementar print() en abb.c.\n");
 }
 
 

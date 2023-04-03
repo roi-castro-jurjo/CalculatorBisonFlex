@@ -2,19 +2,17 @@
 #define ABB_H
 
 #include "stdio.h"
-#include "definiciones.h"
+#include "syntax.h"
 
 /**
  * Tipo de dato abstracto para arbol binario con clave de
  * ordenacion y elemento de celda.
  */
 
-typedef char * tipoclave;
+typedef char *tipoclave;
+typedef lex_component tipoelem;
 		
 typedef struct celda * abb;//tipo opaco
-
-
-
 
 //FUNCIONES DE CREACIÓN Y DESTRUCCIÓN DEL ÁRBOL
 /**

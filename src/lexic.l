@@ -1,5 +1,9 @@
 %{
+#include <stdio.h>
+#include <stdlib.h>
 
+#include "syntax.h"
+#include "tabla.simbolos.h"
 %}
 %option noyywrap header-file="lex.yy.h"
 
@@ -22,13 +26,13 @@ MISC        [\(\)\,\;]
 SPECIAL     {OPERATOR}|{MISC}
 
 WORD ({LETTER}|{NUMBER})+
-FILE (\/{WORD})*{WORD}(.txt)
+FILE (\/{WORD}\/)*{WORD}(.txt)
 
 %%
 
 {DELIM}
 {COMMENT}
 
-
+{NUMBER}  yylval.number = atof(yytext); return NUM;
 
 %%
