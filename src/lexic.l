@@ -94,3 +94,7 @@ FILE        ({LETTER}|{NUMBER})+(.cbf)
 {COMMENT}
 
 %%
+
+ void yyerror (char const *s) {
+   fprintf (stderr, "%s\n", s);
+ }

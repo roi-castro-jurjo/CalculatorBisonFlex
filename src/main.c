@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "tabla_simbolos.h"
+
 int main(int args, char * argv[]) {
-    printf("Hello, World!\n");
+    table_create();
+    table_print();
     return 0;
 }

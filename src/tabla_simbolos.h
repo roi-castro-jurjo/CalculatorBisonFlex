@@ -3,6 +3,7 @@
 #define DCOMPILER_TABLA_SIMBOLOS_H
 
 #include "syntax.h"
+#include "syntax.tab.h"
 
 lex_component table_lexSearch(char * lexeme);
 
