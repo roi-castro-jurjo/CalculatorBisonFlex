@@ -4,9 +4,9 @@
 #include <string.h>
 
 #include "syntax.h"
-#include "tabla.simbolos.h"
+#include "tabla_simbolos.h"
 #include "error.h"
-#include "bison.tab.h"
+#include "syntax.tab.h"
 %}
 %option noyywrap
 %option header-file="lex.yy.h"
@@ -58,7 +58,7 @@ FILE        ({LETTER}|{NUMBER})+(.cbf)
 {FILE}      {
                 yylval.string = malloc(strlen(yytext));
                 strcpy(yylval.string, yytext);
-                return FILE;
+                return SOURCE_FILE;
             }
 
 

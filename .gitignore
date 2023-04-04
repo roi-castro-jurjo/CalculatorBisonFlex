@@ -1,3 +1,6 @@
 # Project exclude paths
 /cmake-build-debug/
-/src/*.yy.c
+src/lex.yy.c
+src/lex.yy.h
+src/syntax.tab.c
+src/syntax.tab.h

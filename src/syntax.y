@@ -22,7 +22,8 @@ void yyerror (char *s);
 %start start
 
 %token <number> NUMBER
-%token <string> CONSTANT VARIABLE FUNCTION COMMAND1 COMMAND2 FILE LIBRARY
+%token <string> CONSTANT VARIABLE FUNCTION COMMAND1 COMMAND2 LIBRARY
+%token <string> SOURCE_FILE
 
 %type <number> expression assign command function
 
@@ -73,8 +74,8 @@ command:   COMMAND1
         | COMMAND1 '(' ')'
         | COMMAND2
         | COMMAND2 '(' ')'
-        | COMMAND2 FILE
-        | COMMAND2 '(' FILE ')'
+        | COMMAND2 SOURCE_FILE
+        | COMMAND2 '(' SOURCE_FILE ')'
         | COMMAND2 expression
 ;
 
