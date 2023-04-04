@@ -8,7 +8,8 @@
 #include "error.h"
 #include "bison.tab.h"
 %}
-%option noyywrap header-file="lex.yy.h"
+%option noyywrap
+%option header-file="lex.yy.h"
 
 
 DELIM       [ \t\r]
@@ -34,11 +35,62 @@ FILE        ({LETTER}|{NUMBER})+(.cbf)
 
 %%
 
-{NUMBER}  {yylval.number = atof(yytext); return NUM;}
+{ID}        {
+                yylval.string = malloc(strlen(yytext));
+                strcpy(yylval.string, yytext);
+
+                lex_component component = table_lexSearch(yylval.string);
+
+                if(component.lex != NULL){
+                    return component.lex_comp;
+                } else {
+                    return VARIABLE;
+                }
+            }
 
 
+{NUMBER}    {
+                yylval.number = atof(yytext);
+                return NUMBER;
+            }
 
-{DELIM}
+
+{FILE}      {
+                yylval.string = malloc(strlen(yytext));
+                strcpy(yylval.string, yytext);
+                return FILE;
+            }
+
+
+{SPECIAL}   {
+                return (int) *yytext;
+            }
+
+
+"/+"        {
+                int next_char;
+                // Establecemos un contador de /+ para abarcar correctamente todos los comentarios anidados
+                int counter = 1;
+                do {
+                    next_char = input();
+                    if (next_char == '/') {
+                        next_char = input();
+                        // Cuando encontramos la cadena "/+" aumentamos el contador
+                        if (next_char == '+') {
+                            counter++;
+                        }
+                    }
+
+                    if (next_char == '+') {
+                        next_char = input();
+                        // Cuando encontramos la cadena "+/" disminuímos el contador
+                        if (next_char == '/') {
+                            counter--;
+                        }
+                    }
+                } while (counter != 0);
+            }
+{SPACE}
 {COMMENT}
 
 %%
