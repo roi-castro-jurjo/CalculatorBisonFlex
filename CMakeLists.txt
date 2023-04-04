@@ -3,4 +3,4 @@ project(CalculatorBF C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(CalculatorBF src/main.c src/commands.c src/commands.h src/syntax.c src/syntax.h src/error.c src/error.h src/tabla_simbolos.h src/tabla_simbolos.c src/abb.c)
+add_executable(CalculatorBF src/main.c src/commands.c src/commands.h src/syntax.c src/syntax.h src/error.c src/error.h src/tabla_simbolos.h src/tabla_simbolos.c src/abb.c src/lex.yy.h src/lex.yy.c)
