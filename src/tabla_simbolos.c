@@ -31,7 +31,7 @@ lex_component table_functSeach(char * funct, void * lib, char * functionLib){
         if (funcion) {
             aux_search.lex_comp = FUNCTION;
             aux_search.lex = functionLib;
-            aux_search.value.funcptr = (double (*)()) funcion;
+            aux_search.value.pFunction = (double (*)()) funcion;
             insertar(&table, aux_search);
         }
         return aux_search;
@@ -49,7 +49,7 @@ void table_reassignLexeme(char * lexeme, double val){
 
     buscar_nodo(table, lexeme, &aux_search);
     if (aux_search.lex != NULL) {
-        aux_search.value.var = val;
+        aux_search.value.variable = val;
         modificar(table, aux_search);
     }
 
@@ -69,8 +69,8 @@ void table_create(){
     crear(&table);
 
     tipoelem inicializacion[] = {
-            {CONSTANT, "pi", .value.var=3.14159265358979323846},
-            {CONSTANT, "e", .value.var=2.7182818284590452354}
+            {CONSTANT, "pi", .value.variable=3.14159265358979323846},
+            {CONSTANT, "e", .value.variable=2.7182818284590452354}
     };
 
     for (int i = 0; i < (sizeof(inicializacion) / sizeof(tipoelem)); i++) {

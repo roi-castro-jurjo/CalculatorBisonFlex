@@ -9,9 +9,9 @@ typedef struct {
     int lex_comp;
     char *lex;
     union {
-        double var;
-        double (*funcptr)();
-        void *libhandle;
+        double variable;
+        double (*pFunction)();
+        void *lib;
     } value;
 } lex_component;
 
