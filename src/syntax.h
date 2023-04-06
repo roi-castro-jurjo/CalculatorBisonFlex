@@ -10,7 +10,7 @@ typedef struct {
     char *lex;
     union {
         double variable;
-        double (*pFunction)();
+        int (*pFunction)();
         void *lib;
     } value;
 } lex_component;

@@ -119,7 +119,31 @@ void buscar_nodo(abb A, tipoclave cl, tipoelem *nodo) {
 }
 
 void print(abb A){
-    printf("Falta por implementar print() en abb.c.\n");
+    tipoelem aux;
+    if (!es_vacio(A)){
+        print(A->izq);
+
+        leer(A, &aux);
+
+        if (aux.lex_comp == CONSTANT){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  CONSTANT  ║ %-10s ║ %.7lf ║\n", aux.lex, aux.value.variable);
+        } else if (aux.lex_comp == VARIABLE){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  VARIABLE  ║ %-10s ║ %.7lf ║\n", aux.lex, aux.value.variable);
+        } else if (aux.lex_comp == FUNCTION){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  FUNCTION  ║ %-10s ║ NOT VALUE ║\n", aux.lex);
+        } else if (aux.lex_comp == COMMAND1 || aux.lex_comp == COMMAND2){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  COMMAND   ║ %-10s ║ NOT VALUE ║\n", aux.lex);
+        } else if (aux.lex_comp == LIBRARY){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  LIBRARY   ║ %-10s ║ NOT VALUE ║\n", aux.lex);
+        }
+
+        print(A->der);
+    }
 }
 
 

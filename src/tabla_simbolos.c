@@ -6,6 +6,7 @@
 
 #include "tabla_simbolos.h"
 #include "abb.h"
+#include "commands.h"
 
 
 // Declaracion de la Tabla de simbolos
@@ -31,7 +32,7 @@ lex_component table_functSeach(char * funct, void * lib, char * functionLib){
         if (funcion) {
             aux_search.lex_comp = FUNCTION;
             aux_search.lex = functionLib;
-            aux_search.value.pFunction = (double (*)()) funcion;
+            aux_search.value.pFunction = (int (*)()) funcion;
             insertar(&table, aux_search);
         }
         return aux_search;
@@ -57,7 +58,6 @@ void table_reassignLexeme(char * lexeme, double val){
 
 void table_resetWorkSpace(){
     printf("Falta por implementar table_resetWorkSpace() en tabla_simbolos.c.\n");
-
 }
 
 void table_printWorkSpace(){
@@ -69,13 +69,16 @@ void table_create(){
     crear(&table);
 
     tipoelem inicializacion[] = {
-            {CONSTANT, "pi", .value.variable=3.14159265358979323846},
-            {CONSTANT, "e", .value.variable=2.7182818284590452354}
+            {CONSTANT, "PI", .value.variable=3.14159265358979},
+            {CONSTANT, "e", .value.variable=2.71828182845904},
+            {COMMAND1, "help", .value.pFunction=help},
+            {COMMAND1, "load", .value.pFunction=load},
+            {COMMAND1, "show_table", .value.pFunction=show_table},
+            {COMMAND1, "quit", .value.pFunction=quit},
     };
 
     for (int i = 0; i < (sizeof(inicializacion) / sizeof(tipoelem)); i++) {
         insertar(&table, inicializacion[i]);
-        printf("\n %d \n", i);
     }
 }
 
@@ -85,12 +88,12 @@ void table_free(){
 
 void table_print(){
     printf("\n\n");
-    printf("╔══════════════════╗\n");
-    printf("║   SYMBOL TABLE   ║\n");
-    printf("╠════════════╦═════╣\n");
-    printf("║     ID     ║ VAL ║\n");
+    printf("╔═════════════════════════════════════╗\n");
+    printf("║             SYMBOL TABLE            ║\n");
+    printf("╠════════════╦════════════╦═══════════╣\n");
+    printf("║    TYPE    ║     ID     ║    VAL    ║\n");
     print(table);
-    printf("╚════════════╩═════╝\n\n");
+    printf("╚════════════╩════════════╩═══════════╝\n\n");
 }
 
 void table_search(){

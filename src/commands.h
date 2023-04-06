@@ -5,4 +5,12 @@
 #ifndef CALCULATORBF_COMMANDS_H
 #define CALCULATORBF_COMMANDS_H
 
+int help();
+
+int load();
+
+int show_table();
+
+int quit();
+
 #endif //CALCULATORBF_COMMANDS_H

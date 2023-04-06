@@ -3,3 +3,20 @@
 //
 
 #include "commands.h"
+
+
+int help(){
+
+}
+
+int load(){
+
+}
+
+int show_table(){
+
+}
+
+int quit(){
+
+}
