@@ -16,6 +16,7 @@ int var_num = 0;
 
 lex_component table_lexSearch(char * lexeme){
     tipoelem aux_search;
+    aux_search.lex = NULL;
     buscar_nodo(table, lexeme, &aux_search);
     return aux_search;
 

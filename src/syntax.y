@@ -14,8 +14,11 @@ int script = 0;
 int error = 0;
 
 void yyerror (char *s);
+double power(double base, int exponent);
+int isnan(double x);
+double module(double dividend, double divisor);
 
-#define PRINT_PROMPT if (!script) printf(">> ");
+#define PRINT_PROMPT if (!script) printf("\n>> ");
 %}
 
 
@@ -61,7 +64,7 @@ line:         '\n'                      {
             | expression '\n'           {
                                             if(!error){
                                                 if (doEcho){
-                                                printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                 }
                                             }
                                             PRINT_PROMPT
@@ -70,7 +73,7 @@ line:         '\n'                      {
             | expression ';' '\n'       {
                                              if(!error){
                                                  if (doEcho){
-                                                 printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                  }
                                              }
                                              PRINT_PROMPT
@@ -79,7 +82,7 @@ line:         '\n'                      {
             | assign '\n'                {
                                              if(!error){
                                                  if (doEcho){
-                                                 printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                  }
                                              }
                                              PRINT_PROMPT
@@ -88,7 +91,7 @@ line:         '\n'                      {
             | assign ';' '\n'            {
                                              if(!error){
                                                  if (doEcho){
-                                                 printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                  }
                                              }
                                              PRINT_PROMPT
@@ -97,7 +100,7 @@ line:         '\n'                      {
             | command '\n'               {
                                               if(!error){
                                                   if (doEcho){
-                                                  printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                   }
                                               }
                                               PRINT_PROMPT
@@ -106,7 +109,7 @@ line:         '\n'                      {
             | command ';' '\n'            {
                                               if(!error){
                                                   if (doEcho){
-                                                  printf("%lf", $1);
+                                                    printf("%lf", $1);
                                                   }
                                               }
                                               PRINT_PROMPT
@@ -115,7 +118,7 @@ line:         '\n'                      {
             | function '\n'               {
                                                if(!error){
                                                    if (doEcho){
-                                                   printf("%lf", $1);
+                                                       printf("%lf", $1);
                                                    }
                                                }
                                                PRINT_PROMPT
@@ -124,7 +127,7 @@ line:         '\n'                      {
             | function ';' '\n'            {
                                                if(!error){
                                                    if (doEcho){
-                                                   printf("%lf", $1);
+                                                      printf("%lf", $1);
                                                    }
                                                }
                                                PRINT_PROMPT
@@ -133,16 +136,57 @@ line:         '\n'                      {
 ;
 
 expression:   NUMBER
-            | CONSTANT
-            | VARIABLE
-            | '-' expression %prec NEG
-            | expression '+' expression
-            | expression '-' expression
-            | expression '*' expression
-            | expression '/' expression
-            | expression '%' expression
-            | expression '^' expression
-            | '(' expression ')'
+            | CONSTANT                      {
+                                                component = table_lexSearch($1);
+                                                $$ = component.value.variable;
+                                                free($1);
+                                            }
+            | VARIABLE                      {
+                                                component = table_lexSearch($1);
+                                                if (component.lex != NULL){
+                                                    $$ = component.value.variable;
+                                                } else{
+                                                    error_show(UNDEFINED_VARIABLE);
+                                                    error = 1;
+                                                    $$ = NAN;
+                                                }
+
+                                                free($1);
+                                            }
+            | '-' expression %prec NEG      {
+                                                $$ = -$2;
+                                            }
+            | expression '+' expression     {
+                                                $$ = $1 + $3;
+                                            }
+            | expression '-' expression     {
+                                                $$ = $1 - $3;
+                                            }
+            | expression '*' expression     {
+                                                 $$ = $1 * $3;
+                                            }
+            | expression '/' expression     {
+                                                if($3 == 0){
+                                                    error_show(MOD_DIV_ZERO);
+                                                    error = 1;
+                                                    $$ = NAN;
+                                                } else {
+                                                    $$ = $1 / $3;
+                                                }
+                                            }
+            | expression '%' expression     {
+                                                if($3 == 0){
+                                                    error_show(MOD_DIV_ZERO);
+                                                    error = 1;
+                                                    $$ = NAN;
+                                                } else {
+                                                    $$ = module($1, $3);
+                                                }
+                                            }
+            | expression '^' expression     {
+                                                $$ = power($1, $3);
+                                            }
+            | '(' expression ')'            {}
 ;
 
 assign:       VARIABLE '=' expression
@@ -172,4 +216,39 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'
 
 void setReadingScript(int value) {
     script = value;
+}
+
+double power(double base, int exponent) {
+    double result = 1.0;
+    int i;
+
+    if (exponent == 0) {
+        return 1.0; // cualquier número elevado a 0 es 1
+    }
+
+    if (exponent > 0) {
+        for (i = 0; i < exponent; ++i) {
+            result *= base;
+        }
+    }
+    else {
+        for (i = 0; i > exponent; --i) {
+            result /= base;
+        }
+    }
+
+    return result;
+}
+
+int isnan(double x) {
+    return x != x;
+}
+
+double module(double dividend, double divisor) {
+    double quotient = dividend / divisor;
+    double rest = quotient - (int)quotient;
+    if (rest < 0) {
+        rest += 1.0;
+    }
+    return rest * divisor;
 }
