@@ -75,6 +75,7 @@ void table_create(){
 
     for (int i = 0; i < (sizeof(inicializacion) / sizeof(tipoelem)); i++) {
         insertar(&table, inicializacion[i]);
+        printf("\n %d \n", i);
     }
 }
 

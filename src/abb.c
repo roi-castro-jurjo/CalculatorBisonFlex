@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dlfcn.h>
+#include "syntax.tab.h"
 
 ///////////////////////// ESTRUCTURAS DE DATOS
 
@@ -38,9 +40,13 @@ void crear(abb *A) {
 
 void destruir(abb *A) {
     if (*A != NULL) {
+        printf("Entramos a destruir %s\n", (*A)->info.lex);
         destruir(&(*A)->izq);
         destruir(&(*A)->der);
         free((*A)->info.lex);
+        if ((*A)->info.lex_comp == LIBRARY) {
+            dlclose((*A)->info.value.lib);
+        }
         free(*A);
         *A = NULL;
     }
@@ -127,7 +133,9 @@ void print(abb A){
 void insertar(abb *A, tipoelem E) {
     if (es_vacio(*A)) {
         *A = (abb) malloc(sizeof (struct celda));
-        (*A)->info = E;
+        (*A)->info.lex_comp = E.lex_comp;
+        (*A)->info.lex = strdup(E.lex);
+        (*A)->info.value = E.value;
         (*A)->izq = NULL;
         (*A)->der = NULL;
         return;
