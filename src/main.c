@@ -5,7 +5,9 @@
 
 int main(int args, char * argv[]) {
     table_create();
-    table_print();
+
+    syntax(NULL);
+
     table_free();
     return 0;
 }

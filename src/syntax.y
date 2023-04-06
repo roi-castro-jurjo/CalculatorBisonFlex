@@ -4,6 +4,8 @@
 #include "tabla_simbolos.h"
 #include "error.h"
 #include "lex.yy.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 lex_component component;
@@ -12,7 +14,10 @@ int script = 0;
 int error = 0;
 
 void yyerror (char *s);
+
+#define PRINT_PROMPT if (!script) printf(">> ");
 %}
+
 
 %union {
     double number;
@@ -21,11 +26,20 @@ void yyerror (char *s);
 
 %start start
 
-%token <number> NUMBER
-%token <string> CONSTANT VARIABLE FUNCTION COMMAND1 COMMAND2 LIBRARY
-%token <string> SOURCE_FILE
+%type <number> expression
+%type <number> assign
+%type <number> command
+%type <number> function
 
-%type <number> expression assign command function
+%token <number> NUMBER
+
+%token <string> CONSTANT
+%token <string> VARIABLE
+%token <string> FUNCTION
+%token <string> COMMAND1
+%token <string> COMMAND2
+%token <string> LIBRARY
+%token <string> SOURCE_FILE
 
 %left '-' '+'
 %left '*' '/'
@@ -35,55 +49,127 @@ void yyerror (char *s);
 
 
 %%
-start: %empty
-        | start line
+start:        %empty            {
+                                    PRINT_PROMPT
+                                }
+            | start line
 ;
 
-line:   '\n'
-        | expression '\n'
-        | expression ';' '\n'
-        | assign '\n'
-        | assign ';' '\n'
-        | command '\n'
-        | command ';' '\n'
-        | function '\n'
-        | function ';' '\n'
-
+line:         '\n'                      {
+                                            PRINT_PROMPT
+                                        }
+            | expression '\n'           {
+                                            if(!error){
+                                                if (doEcho){
+                                                printf("%lf", $1);
+                                                }
+                                            }
+                                            PRINT_PROMPT
+                                            error = 0;
+                                        }
+            | expression ';' '\n'       {
+                                             if(!error){
+                                                 if (doEcho){
+                                                 printf("%lf", $1);
+                                                 }
+                                             }
+                                             PRINT_PROMPT
+                                             error = 0;
+                                         }
+            | assign '\n'                {
+                                             if(!error){
+                                                 if (doEcho){
+                                                 printf("%lf", $1);
+                                                 }
+                                             }
+                                             PRINT_PROMPT
+                                             error = 0;
+                                         }
+            | assign ';' '\n'            {
+                                             if(!error){
+                                                 if (doEcho){
+                                                 printf("%lf", $1);
+                                                 }
+                                             }
+                                             PRINT_PROMPT
+                                             error = 0;
+                                         }
+            | command '\n'               {
+                                              if(!error){
+                                                  if (doEcho){
+                                                  printf("%lf", $1);
+                                                  }
+                                              }
+                                              PRINT_PROMPT
+                                              error = 0;
+                                          }
+            | command ';' '\n'            {
+                                              if(!error){
+                                                  if (doEcho){
+                                                  printf("%lf", $1);
+                                                  }
+                                              }
+                                              PRINT_PROMPT
+                                              error = 0;
+                                          }
+            | function '\n'               {
+                                               if(!error){
+                                                   if (doEcho){
+                                                   printf("%lf", $1);
+                                                   }
+                                               }
+                                               PRINT_PROMPT
+                                               error = 0;
+                                           }
+            | function ';' '\n'            {
+                                               if(!error){
+                                                   if (doEcho){
+                                                   printf("%lf", $1);
+                                                   }
+                                               }
+                                               PRINT_PROMPT
+                                               error = 0;
+                                           }
 ;
 
-expression:    NUMBER
-        | CONSTANT
-        | VARIABLE
-        | '-' expression %prec NEG
-        | expression '+' expression
-        | expression '-' expression
-        | expression '*' expression
-        | expression '/' expression
-        | expression '%' expression
-        | expression '^' expression
-        | '(' expression ')'
+expression:   NUMBER
+            | CONSTANT
+            | VARIABLE
+            | '-' expression %prec NEG
+            | expression '+' expression
+            | expression '-' expression
+            | expression '*' expression
+            | expression '/' expression
+            | expression '%' expression
+            | expression '^' expression
+            | '(' expression ')'
 ;
 
-assign:   VARIABLE '=' expression
-        | VARIABLE '=' function
-        | CONSTANT '=' expression
-        | CONSTANT '=' function
+assign:       VARIABLE '=' expression
+            | VARIABLE '=' function
+            | VARIABLE '=' CONSTANT
+            | CONSTANT '=' expression
+            | CONSTANT '=' function
 ;
 
-command:   COMMAND1
-        | COMMAND1 '(' ')'
-        | COMMAND2
-        | COMMAND2 '(' ')'
-        | COMMAND2 SOURCE_FILE
-        | COMMAND2 '(' SOURCE_FILE ')'
-        | COMMAND2 expression
+command:      COMMAND1
+            | COMMAND1 '(' ')'
+            | COMMAND2
+            | COMMAND2 '(' ')'
+            | COMMAND2 SOURCE_FILE
+            | COMMAND2 '(' SOURCE_FILE ')'
+            | COMMAND2 expression
 ;
 
-function:    LIBRARY '/' VARIABLE '(' expression ')'
-        | LIBRARY '/' VARIABLE '(' expression ',' expression ')'
-        | LIBRARY '/' VARIABLE '(' ')'
-        | expression '(' expression ')'
-        | expression '(' expression ',' expression ')'
-        | expression '(' ')'
+function:     LIBRARY '/' VARIABLE '(' expression ')'
+            | LIBRARY '/' VARIABLE '(' expression ',' expression ')'
+            | LIBRARY '/' VARIABLE '(' ')'
+            | expression '(' expression ')'
+            | expression '(' expression ',' expression ')'
+            | expression '(' ')'
 ;
 %%
+
+void setReadingScript(int value) {
+    script = value;
+}

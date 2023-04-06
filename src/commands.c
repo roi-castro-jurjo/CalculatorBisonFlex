@@ -3,20 +3,37 @@
 //
 
 #include "commands.h"
+#include "lex.yy.h"
+#include "error.h"
+#include "syntax.tab.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 
 int help(){
-
+    printf("This command does nothing to help.\n");
+    return EXIT_SUCCESS;
 }
 
-int load(){
+int load(char * file){
+    yyin = fopen(file, "r");
 
+    if (yyin == NULL){
+        error_show(BAD_SOURCE_FILE);
+        yyin = stdin;
+        return EXIT_FAILURE;
+    } else {
+        setReadingScript(1);
+        return EXIT_SUCCESS;
+    }
 }
 
 int show_table(){
-
+    printf("This command does nothing to show.\n");
+    return EXIT_SUCCESS;
 }
 
 int quit(){
-
+    printf("This command does nothing to quit.\n");
+    return EXIT_SUCCESS;
 }

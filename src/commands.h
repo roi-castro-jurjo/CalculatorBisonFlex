@@ -7,7 +7,7 @@
 
 int help();
 
-int load();
+int load(char * file);
 
 int show_table();
 

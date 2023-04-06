@@ -67,6 +67,13 @@ FILE        ({LETTER}|{NUMBER})+(.cbf)
             }
 
 
+<<EOF>>     {
+                setReadingScript(0);
+                fclose(yyin);
+                yyrestart(stdin);
+            }
+
+
 "/+"        {
                 int next_char;
                 // Establecemos un contador de /+ para abarcar correctamente todos los comentarios anidados
