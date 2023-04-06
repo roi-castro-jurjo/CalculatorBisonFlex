@@ -186,14 +186,107 @@ expression:   NUMBER
             | expression '^' expression     {
                                                 $$ = power($1, $3);
                                             }
-            | '(' expression ')'            {}
+            | '(' expression ')'            {
+                                                $$ = $2;
+                                            }
 ;
 
-assign:       VARIABLE '=' expression
-            | VARIABLE '=' function
-            | VARIABLE '=' CONSTANT
-            | CONSTANT '=' expression
-            | CONSTANT '=' function
+assign:       VARIABLE '=' expression       {
+                                                if (!error){
+                                                    component = table_lexSearch($1);
+                                                    if (component.lex != NULL){
+                                                        table_reassignLexeme($1, $3);
+                                                    } else {
+                                                        component.lex = malloc(strlen($1));
+                                                        strcpy(component.lex, $1);
+                                                        component.lex_comp = VARIABLE;
+                                                        component.value.variable = $3;
+                                                        table_insert(component);
+                                                        free(component.lex);
+                                                    }
+                                                }
+                                                $$ = $3;
+                                                free($1);
+                                            }
+            | VARIABLE '=' function         {
+                                                if (!error){
+                                                    component = table_lexSearch($1);
+                                                    if (component.lex != NULL){
+                                                        table_reassignLexeme($1, $3);
+                                                    } else {
+                                                        component.lex = malloc(strlen($1));
+                                                        strcpy(component.lex, $1);
+                                                        component.lex_comp = VARIABLE;
+                                                        component.value.variable = $3;
+                                                        table_insert(component);
+                                                        free(component.lex);
+                                                    }
+                                                }
+                                                $$ = $3;
+                                                free($1);
+                                            }
+            | VARIABLE '=' CONSTANT         {
+                                                lex_component constant;
+                                                if (!error){
+                                                    constant = table_lexSearch($3);
+                                                    component = table_lexSearch($1);
+                                                    if (component.lex != NULL){
+                                                        table_reassignLexeme($1, constant.value.variable);
+                                                    } else {
+                                                        component.lex = malloc(strlen($1));
+                                                        strcpy(component.lex, $1);
+                                                        component.lex_comp = VARIABLE;
+                                                        component.value.variable = constant.value.variable;
+                                                        table_insert(component);
+                                                        free(component.lex);
+                                                    }
+                                                }
+                                                $$ = constant.value.variable;
+                                                free($1);
+                                            }
+            | VARIABLE '=' VARIABLE         {
+                                                lex_component aux_variable;
+                                                if (!error){
+                                                    aux_variable = table_lexSearch($3);
+                                                    component = table_lexSearch($1);
+                                                    if (component.lex != NULL){
+                                                        table_reassignLexeme($1, aux_variable.value.variable);
+                                                    } else {
+                                                        component.lex = malloc(strlen($1));
+                                                        strcpy(component.lex, $1);
+                                                        component.lex_comp = VARIABLE;
+                                                        component.value.variable = aux_variable.value.variable;
+                                                        table_insert(component);
+                                                        free(component.lex);
+                                                    }
+                                                }
+                                                $$ = aux_variable.value.variable;
+                                                free($1);
+                                            }
+            | CONSTANT '=' expression       {
+                                                error_show(ASSIGN_CONSTANT);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                            }
+            | CONSTANT '=' function         {
+                                                error_show(ASSIGN_CONSTANT);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                            }
+            | CONSTANT '=' VARIABLE         {
+                                                error_show(ASSIGN_CONSTANT);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                            }
+            | CONSTANT '=' CONSTANT         {
+                                                error_show(ASSIGN_CONSTANT);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                            }
 ;
 
 command:      COMMAND1
@@ -223,7 +316,7 @@ double power(double base, int exponent) {
     int i;
 
     if (exponent == 0) {
-        return 1.0; // cualquier número elevado a 0 es 1
+        return 1.0;
     }
 
     if (exponent > 0) {
