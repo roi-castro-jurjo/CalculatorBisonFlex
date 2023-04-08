@@ -15,7 +15,7 @@
 #define MOD_DIV_ZERO 105
 #define BAD_SOURCE_FILE 106
 #define MISSING_ARGUMENTS 107
-#define MISSING_LIBRARY 108
+#define LIBRARY_NOT_FOUND 108
 
 void error_show(int error);
 

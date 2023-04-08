@@ -11,7 +11,6 @@
 %option noyywrap
 %option header-file="lex.yy.h"
 
-
 DELIM       [ \t\r]
 SPACE       {DELIM}+
 END_LINE    \n

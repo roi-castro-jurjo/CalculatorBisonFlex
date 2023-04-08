@@ -50,7 +50,6 @@ double module(double dividend, double divisor);
 %precedence NEG
 %right '^'
 
-
 %%
 start:        %empty            {
                                     PRINT_PROMPT
@@ -225,44 +224,6 @@ assign:       VARIABLE '=' expression       {
                                                 $$ = $3;
                                                 free($1);
                                             }
-            | VARIABLE '=' CONSTANT         {
-                                                lex_component constant;
-                                                if (!error){
-                                                    constant = table_lexSearch($3);
-                                                    component = table_lexSearch($1);
-                                                    if (component.lex != NULL){
-                                                        table_reassignLexeme($1, constant.value.variable);
-                                                    } else {
-                                                        component.lex = malloc(strlen($1));
-                                                        strcpy(component.lex, $1);
-                                                        component.lex_comp = VARIABLE;
-                                                        component.value.variable = constant.value.variable;
-                                                        table_insert(component);
-                                                        free(component.lex);
-                                                    }
-                                                }
-                                                $$ = constant.value.variable;
-                                                free($1);
-                                            }
-            | VARIABLE '=' VARIABLE         {
-                                                lex_component aux_variable;
-                                                if (!error){
-                                                    aux_variable = table_lexSearch($3);
-                                                    component = table_lexSearch($1);
-                                                    if (component.lex != NULL){
-                                                        table_reassignLexeme($1, aux_variable.value.variable);
-                                                    } else {
-                                                        component.lex = malloc(strlen($1));
-                                                        strcpy(component.lex, $1);
-                                                        component.lex_comp = VARIABLE;
-                                                        component.value.variable = aux_variable.value.variable;
-                                                        table_insert(component);
-                                                        free(component.lex);
-                                                    }
-                                                }
-                                                $$ = aux_variable.value.variable;
-                                                free($1);
-                                            }
             | CONSTANT '=' expression       {
                                                 error_show(ASSIGN_CONSTANT);
                                                 error = 1;
@@ -275,29 +236,27 @@ assign:       VARIABLE '=' expression       {
                                                 $$ = NAN;
                                                 free($1);
                                             }
-            | CONSTANT '=' VARIABLE         {
-                                                error_show(ASSIGN_CONSTANT);
+            | NUMBER '=' expression         {
+                                                error_show(SYNTAX_ERROR);
                                                 error = 1;
                                                 $$ = NAN;
-                                                free($1);
-                                            }
-            | CONSTANT '=' CONSTANT         {
-                                                error_show(ASSIGN_CONSTANT);
-                                                error = 1;
-                                                $$ = NAN;
-                                                free($1);
                                             }
 ;
 
 command:      COMMAND1                      {
                                                 component = table_lexSearch($1);
-                                                (*(component.value.pFunction))();
+                                                component.value.pFunction();
                                                 free($1);
                                             }
             | COMMAND1 '(' ')'              {
                                                 component = table_lexSearch($1);
-                                                (*(component.value.pFunction))();
+                                                component.value.pFunction();
                                                 free($1);
+                                             }
+            | COMMAND1 '(' expression ')'    {
+                                                error_show(SYNTAX_ERROR);
+                                                error = 1;
+                                                $$ = NAN;
                                              }
             | COMMAND2 expression            {
                                                 error_show(BAD_SOURCE_FILE);
@@ -319,24 +278,76 @@ command:      COMMAND1                      {
                                              }
             | COMMAND2 SOURCE_FILE           {
                                                 component = table_lexSearch($1);
-                                                (*(component.value.pFunction))($2);
+                                                component.value.pFunction($2);
                                                 free($1);
                                                 free($2);
                                              }
             | COMMAND2 '(' SOURCE_FILE ')'   {
                                                  component = table_lexSearch($1);
-                                                 (*(component.value.pFunction))($3);
+                                                 component.value.pFunction($3);
                                                  free($1);
                                                  free($3);
                                               }
 ;
 
-function:     LIBRARY '/' VARIABLE '(' expression ')'
-            | LIBRARY '/' VARIABLE '(' expression ',' expression ')'
-            | LIBRARY '/' VARIABLE '(' ')'
-            | expression '(' expression ')'
-            | expression '(' expression ',' expression ')'
-            | expression '(' ')'
+function:     LIBRARY '/' VARIABLE '(' expression ')'   {
+                                                            component = table_lexSearch($1);
+
+                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
+                                                            sprintf(library, "%s/%s", $1, $3);
+
+                                                            lex_component function = table_functSearch(component.value.lib, $3, library);
+
+                                                            if (function.lex != NULL) {
+                                                                $$ = function.value.pFunction($5);
+                                                            } else {
+                                                                error_show(UNDEFINED_FUNCTION);
+                                                                error = 1;
+                                                                $$ = NAN;
+                                                            }
+                                                            free(library);
+                                                            free($1);
+                                                            free($3);
+                                                        }
+            | LIBRARY '/' VARIABLE '(' expression ',' expression ')'    {
+                                                                            component = table_lexSearch($1);
+
+                                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
+                                                                            sprintf(library, "%s/%s", $1, $3);
+
+                                                                            lex_component function = table_functSearch(component.value.lib, $3, library);
+
+                                                                            if (function.lex != NULL) {
+                                                                                $$ = function.value.pFunction($5);
+                                                                            } else {
+                                                                                error_show(UNDEFINED_FUNCTION);
+                                                                                error = 1;
+                                                                                $$ = NAN;
+                                                                            }
+                                                                            free(library);
+                                                                            free($1);
+                                                                            free($3);
+                                                                        }
+            | LIBRARY '/' VARIABLE '(' ')'                              {
+                                                                            error_show(MISSING_ARGUMENTS);
+                                                                            error = 1;
+                                                                            $$ = NAN;
+                                                                        }
+            | expression '(' expression ')'                             {
+                                                                            error_show(MISSING_ARGUMENTS);
+                                                                            error = 1;
+                                                                            $$ = NAN;
+                                                                        }
+            | expression '(' expression ',' expression ')'              {
+                                                                            error_show(MISSING_ARGUMENTS);
+                                                                            error = 1;
+                                                                            $$ = NAN;
+                                                                        }
+            | expression '(' ')'                            {
+                                                                error_show(MISSING_ARGUMENTS);
+                                                                error = 1;
+                                                                $$ = NAN;
+                                                            }
 ;
 %%
 

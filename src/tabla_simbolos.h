@@ -7,7 +7,7 @@
 
 lex_component table_lexSearch(char * lexeme);
 
-lex_component table_functSeach(char * funct, void * lib, char * functionLib);
+lex_component table_functSearch(char * funct, void * lib, char * functionLib);
 
 void table_insert(lex_component component);
 

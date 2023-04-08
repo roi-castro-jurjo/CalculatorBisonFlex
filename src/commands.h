@@ -11,6 +11,14 @@ int load(char * file);
 
 int show_table();
 
+int show_ws();
+
 int quit();
+
+int import_lib(char * lib);
+
+int clear();
+
+int clear_ws();
 
 #endif //CALCULATORBF_COMMANDS_H

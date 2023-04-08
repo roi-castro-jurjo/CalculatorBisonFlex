@@ -22,7 +22,7 @@ lex_component table_lexSearch(char * lexeme){
 
 }
 
-lex_component table_functSeach(char * funct, void * lib, char * functionLib){
+lex_component table_functSearch(char * funct, void * lib, char * functionLib){
     tipoelem aux_search;
     buscar_nodo(table, funct, &aux_search);
     if (aux_search.lex != NULL) {
@@ -73,8 +73,13 @@ void table_create(){
             {CONSTANT, "PI", .value.variable=3.14159265358979},
             {CONSTANT, "e", .value.variable=2.71828182845904},
             {COMMAND1, "help", .value.pFunction=help},
-            {COMMAND1, "load", .value.pFunction=load},
-            {COMMAND1, "show_table", .value.pFunction=show_table},
+            {COMMAND2, "load", .value.pFunction=load},
+            {COMMAND2, "import", .value.pFunction=import_lib},
+            {COMMAND1, "stable", .value.pFunction=show_table},
+            {COMMAND1, "sws", .value.pFunction=show_ws},
+            {COMMAND1, "clear", .value.pFunction=clear},
+            {COMMAND1, "clearws", .value.pFunction=clear_ws},
+
             {COMMAND1, "quit", .value.pFunction=quit},
     };
 

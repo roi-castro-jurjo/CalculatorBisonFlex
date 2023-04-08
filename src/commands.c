@@ -37,3 +37,23 @@ int quit(){
     printf("This command does nothing to quit.\n");
     return EXIT_SUCCESS;
 }
+
+int import_lib(char * lib){
+    printf("This command does nothing to quit.\n");
+    return EXIT_SUCCESS;
+}
+
+int clear(){
+    printf("This command does nothing to quit.\n");
+    return EXIT_SUCCESS;
+}
+
+int clear_ws(){
+    printf("This command does nothing to quit.\n");
+    return EXIT_SUCCESS;
+}
+
+int show_ws(){
+    printf("This command does nothing to quit.\n");
+    return EXIT_SUCCESS;
+}

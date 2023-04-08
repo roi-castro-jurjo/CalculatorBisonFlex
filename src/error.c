@@ -27,7 +27,7 @@ void error_show(int error){
         case MISSING_ARGUMENTS:
             printf("\n\nINVALID OR MISSING ARGUMENTS\n\n");
             break;
-        case MISSING_LIBRARY:
+        case LIBRARY_NOT_FOUND:
             printf("\n\nINVALID OR MISSING LIBRARY\n\n");
             break;
         default:
