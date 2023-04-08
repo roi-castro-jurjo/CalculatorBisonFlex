@@ -289,13 +289,46 @@ assign:       VARIABLE '=' expression       {
                                             }
 ;
 
-command:      COMMAND1
-            | COMMAND1 '(' ')'
-            | COMMAND2
-            | COMMAND2 '(' ')'
-            | COMMAND2 SOURCE_FILE
-            | COMMAND2 '(' SOURCE_FILE ')'
-            | COMMAND2 expression
+command:      COMMAND1                      {
+                                                component = table_lexSearch($1);
+                                                (*(component.value.pFunction))();
+                                                free($1);
+                                            }
+            | COMMAND1 '(' ')'              {
+                                                component = table_lexSearch($1);
+                                                (*(component.value.pFunction))();
+                                                free($1);
+                                             }
+            | COMMAND2 expression            {
+                                                error_show(BAD_SOURCE_FILE);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                             }
+            | COMMAND2                       {
+                                                error_show(BAD_SOURCE_FILE);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                             }
+            | COMMAND2 '(' ')'               {
+                                                error_show(BAD_SOURCE_FILE);
+                                                error = 1;
+                                                $$ = NAN;
+                                                free($1);
+                                             }
+            | COMMAND2 SOURCE_FILE           {
+                                                component = table_lexSearch($1);
+                                                (*(component.value.pFunction))($2);
+                                                free($1);
+                                                free($2);
+                                             }
+            | COMMAND2 '(' SOURCE_FILE ')'   {
+                                                 component = table_lexSearch($1);
+                                                 (*(component.value.pFunction))($3);
+                                                 free($1);
+                                                 free($3);
+                                              }
 ;
 
 function:     LIBRARY '/' VARIABLE '(' expression ')'
