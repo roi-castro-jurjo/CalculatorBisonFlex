@@ -30,7 +30,7 @@ ID          ((\_|{LETTER})+(\_|{LETTER}|{NUMBER})*)
 OPERATOR    [\+\-\*\/\^\=]|[\(\)\,\;]
 SPECIAL     {OPERATOR}|{END_LINE}
 
-FILE        ({LETTER}|{NUMBER})+(.cbf)
+FILE        ({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+|(\/({LETTER}|{DIGIT})*)*\/({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+
 
 %%
 

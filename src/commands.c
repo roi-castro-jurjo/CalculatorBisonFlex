@@ -6,8 +6,11 @@
 #include "lex.yy.h"
 #include "error.h"
 #include "syntax.tab.h"
+#include "syntax.h"
+#include "tabla_simbolos.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <dlfcn.h>
 
 
 int help(){
@@ -39,7 +42,26 @@ int quit(){
 }
 
 int import_lib(char * lib){
-    printf("This command does nothing to quit.\n");
+    void *library = dlopen(lib, RTLD_LAZY);
+    char *nome_lib = NULL;
+    char *lexema;
+    if (library == NULL) {
+        printf("\033[1;31mErro: apertura de librería fallida.\n\tDetalles: %s\033[0m\n\n", dlerror());
+    } else {
+        for (int i = strlen(lib) - 1; i >= 0; i--) {
+            if (lib[i] == '/') {
+                nome_lib = &lib[i + 1];
+                break;
+            }
+        }
+        if (nome_lib == NULL) {
+            nome_lib = lib;
+        }
+        lexema = strtok(nome_lib, ".");
+        lex_component comp_lib = {LIBRARY, lexema, .value.lib = library};
+        table_insert(comp_lib);
+        printf("\033[1;33mLibrería cargada correctamente.\n\n\033[0m");
+    }
     return EXIT_SUCCESS;
 }
 
