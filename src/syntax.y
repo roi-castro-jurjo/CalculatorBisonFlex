@@ -1,12 +1,9 @@
 %{
-#include <math.h>
-
 #include "tabla_simbolos.h"
 #include "error.h"
 #include "lex.yy.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 
 lex_component component;
 int doEcho = 1;
@@ -17,6 +14,7 @@ void yyerror (char *s);
 double power(double base, int exponent);
 int isnan(double x);
 double module(double dividend, double divisor);
+double set_nan();
 
 #define PRINT_PROMPT if (!script) printf("\n>> ");
 %}
@@ -147,7 +145,7 @@ expression:   NUMBER
                                                 } else{
                                                     error_show(UNDEFINED_VARIABLE);
                                                     error = 1;
-                                                    $$ = NAN;
+                                                    $$ = set_nan();
                                                 }
 
                                                 free($1);
@@ -168,7 +166,7 @@ expression:   NUMBER
                                                 if($3 == 0){
                                                     error_show(MOD_DIV_ZERO);
                                                     error = 1;
-                                                    $$ = NAN;
+                                                    $$ = set_nan();
                                                 } else {
                                                     $$ = $1 / $3;
                                                 }
@@ -177,7 +175,7 @@ expression:   NUMBER
                                                 if($3 == 0){
                                                     error_show(MOD_DIV_ZERO);
                                                     error = 1;
-                                                    $$ = NAN;
+                                                    $$ = set_nan();
                                                 } else {
                                                     $$ = module($1, $3);
                                                 }
@@ -227,19 +225,19 @@ assign:       VARIABLE '=' expression       {
             | CONSTANT '=' expression       {
                                                 error_show(ASSIGN_CONSTANT);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                                 free($1);
                                             }
             | CONSTANT '=' function         {
                                                 error_show(ASSIGN_CONSTANT);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                                 free($1);
                                             }
             | NUMBER '=' expression         {
                                                 error_show(SYNTAX_ERROR);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                             }
 ;
 
@@ -256,24 +254,24 @@ command:      COMMAND1                      {
             | COMMAND1 '(' expression ')'    {
                                                 error_show(SYNTAX_ERROR);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                              }
             | COMMAND2 expression            {
                                                 error_show(BAD_SOURCE_FILE);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                                 free($1);
                                              }
             | COMMAND2                       {
                                                 error_show(BAD_SOURCE_FILE);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                                 free($1);
                                              }
             | COMMAND2 '(' ')'               {
                                                 error_show(BAD_SOURCE_FILE);
                                                 error = 1;
-                                                $$ = NAN;
+                                                $$ = set_nan();
                                                 free($1);
                                              }
             | COMMAND2 SOURCE_FILE           {
@@ -303,7 +301,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                             } else {
                                                                 error_show(UNDEFINED_FUNCTION);
                                                                 error = 1;
-                                                                $$ = NAN;
+                                                                $$ = set_nan();
                                                             }
                                                             free(library);
                                                             free($1);
@@ -322,7 +320,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                             } else {
                                                                                 error_show(UNDEFINED_FUNCTION);
                                                                                 error = 1;
-                                                                                $$ = NAN;
+                                                                                $$ = set_nan();
                                                                             }
                                                                             free(library);
                                                                             free($1);
@@ -331,22 +329,22 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
             | LIBRARY '/' VARIABLE '(' ')'                              {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             error = 1;
-                                                                            $$ = NAN;
+                                                                            $$ = set_nan();
                                                                         }
             | expression '(' expression ')'                             {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             error = 1;
-                                                                            $$ = NAN;
+                                                                            $$ = set_nan();
                                                                         }
             | expression '(' expression ',' expression ')'              {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             error = 1;
-                                                                            $$ = NAN;
+                                                                            $$ = set_nan();
                                                                         }
             | expression '(' ')'                            {
                                                                 error_show(MISSING_ARGUMENTS);
                                                                 error = 1;
-                                                                $$ = NAN;
+                                                                $$ = set_nan();
                                                             }
 ;
 %%
@@ -388,4 +386,11 @@ double module(double dividend, double divisor) {
         rest += 1.0;
     }
     return rest * divisor;
+}
+
+double set_nan() {
+    unsigned long long nan_bits = 0x7FF8000000000000ULL;
+    double nan_value;
+    memcpy(&nan_value, &nan_bits, sizeof(double));
+    return nan_value;
 }

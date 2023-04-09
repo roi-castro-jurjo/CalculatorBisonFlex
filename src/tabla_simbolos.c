@@ -79,7 +79,6 @@ void table_create(){
             {COMMAND1, "sws", .value.pFunction=show_ws},
             {COMMAND1, "clear", .value.pFunction=clear},
             {COMMAND1, "clearws", .value.pFunction=clear_ws},
-
             {COMMAND1, "quit", .value.pFunction=quit},
     };
 

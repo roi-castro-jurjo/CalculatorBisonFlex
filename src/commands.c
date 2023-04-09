@@ -27,6 +27,8 @@ int load(char * file){
         return EXIT_FAILURE;
     } else {
         setReadingScript(1);
+        fclose(yyin);
+        yyin = stdin;
         return EXIT_SUCCESS;
     }
 }
@@ -37,31 +39,37 @@ int show_table(){
 }
 
 int quit(){
-    printf("This command does nothing to quit.\n");
-    return EXIT_SUCCESS;
+    yylex_destroy();
+    table_free();
+    exit(EXIT_SUCCESS);
 }
 
-int import_lib(char * lib){
+int import_lib(char *lib) {
     void *library = dlopen(lib, RTLD_LAZY);
-    char *nome_lib = NULL;
-    char *lexema;
     if (library == NULL) {
-        printf("\033[1;31mErro: apertura de librería fallida.\n\tDetalles: %s\033[0m\n\n", dlerror());
-    } else {
-        for (int i = strlen(lib) - 1; i >= 0; i--) {
-            if (lib[i] == '/') {
-                nome_lib = &lib[i + 1];
-                break;
-            }
-        }
-        if (nome_lib == NULL) {
-            nome_lib = lib;
-        }
-        lexema = strtok(nome_lib, ".");
-        lex_component comp_lib = {LIBRARY, lexema, .value.lib = library};
-        table_insert(comp_lib);
-        printf("\033[1;33mLibrería cargada correctamente.\n\n\033[0m");
+        error_show(CANT_OPEN_LIBRARY);
+        return EXIT_FAILURE;
     }
+
+    char *lib_name = NULL;
+    for (int i = strlen(lib) - 1; i >= 0; i--) {
+        if (lib[i] == '/') {
+            lib_name = &lib[i + 1];
+            break;
+        }
+    }
+    if (lib_name == NULL) {
+        lib_name = lib;
+    }
+
+    char *lexema = strtok(lib_name, ".");
+    lex_component comp_lib = {
+            .lex_comp = LIBRARY,
+            .lex = lexema,
+            .value.lib = library
+    };
+    table_insert(comp_lib);
+
     return EXIT_SUCCESS;
 }
 

@@ -16,6 +16,7 @@
 #define BAD_SOURCE_FILE 106
 #define MISSING_ARGUMENTS 107
 #define LIBRARY_NOT_FOUND 108
+#define CANT_OPEN_LIBRARY 109
 
 void error_show(int error);
 

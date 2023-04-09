@@ -30,6 +30,9 @@ void error_show(int error){
         case LIBRARY_NOT_FOUND:
             printf("\n\nINVALID OR MISSING LIBRARY\n\n");
             break;
+        case CANT_OPEN_LIBRARY:
+            printf("\n\nCOULDNT OPEN LIBRARY\n\n");
+            break;
         default:
             break;
     }
