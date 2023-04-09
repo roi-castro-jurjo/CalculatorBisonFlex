@@ -33,6 +33,9 @@ void error_show(int error){
         case CANT_OPEN_LIBRARY:
             printf("\n\nCOULDNT OPEN LIBRARY\n\n");
             break;
+        case LEXICAL_ERROR:
+            printf("\n\nLEX NOT FOUND\n\n");
+            break;
         default:
             break;
     }

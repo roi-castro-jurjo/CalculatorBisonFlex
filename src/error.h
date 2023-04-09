@@ -17,6 +17,7 @@
 #define MISSING_ARGUMENTS 107
 #define LIBRARY_NOT_FOUND 108
 #define CANT_OPEN_LIBRARY 109
+#define LEXICAL_ERROR 110
 
 void error_show(int error);
 

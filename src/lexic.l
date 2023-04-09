@@ -99,6 +99,10 @@ FILE        ({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+|(\/({LETTER}|{DIGIT})*)*
 {SPACE}
 {COMMENT}
 
+.           {
+                error_show(LEXICAL_ERROR);
+            }
+
 %%
 
  void yyerror (char const *s) {

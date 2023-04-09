@@ -245,11 +245,13 @@ command:      COMMAND1                      {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
+                                                error = 1;
                                             }
             | COMMAND1 '(' ')'              {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
+                                                error = 1;
                                              }
             | COMMAND1 '(' expression ')'    {
                                                 error_show(SYNTAX_ERROR);
@@ -294,7 +296,26 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                             char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
                                                             sprintf(library, "%s/%s", $1, $3);
 
-                                                            lex_component function = table_functSearch(component.value.lib, $3, library);
+                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
+
+                                                            if (function.lex != NULL) {
+                                                                $$ = function.value.pFunction($5);
+                                                            } else {
+                                                                error_show(UNDEFINED_FUNCTION);
+                                                                error = 1;
+                                                                $$ = set_nan();
+                                                            }
+                                                            free(library);
+                                                            free($1);
+                                                            free($3);
+                                                        }
+            | LIBRARY '/' FUNCTION '(' expression ')'     {
+                                                            component = table_lexSearch($1);
+
+                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
+                                                            sprintf(library, "%s/%s", $1, $3);
+
+                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
 
                                                             if (function.lex != NULL) {
                                                                 $$ = function.value.pFunction($5);
@@ -313,7 +334,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                             char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
                                                                             sprintf(library, "%s/%s", $1, $3);
 
-                                                                            lex_component function = table_functSearch(component.value.lib, $3, library);
+                                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
 
                                                                             if (function.lex != NULL) {
                                                                                 $$ = function.value.pFunction($5);

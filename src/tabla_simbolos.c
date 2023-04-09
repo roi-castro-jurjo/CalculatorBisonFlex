@@ -23,21 +23,21 @@ lex_component table_lexSearch(char * lexeme){
 }
 
 lex_component table_functSearch(char * funct, void * lib, char * functionLib){
-    tipoelem aux_search;
-    buscar_nodo(table, funct, &aux_search);
-    if (aux_search.lex != NULL) {
-        return aux_search;
-    } else {
+    tipoelem comp_busqueda = {0, NULL};
+    buscar_nodo(table, funct, &comp_busqueda);
+
+    if (comp_busqueda.lex == NULL) {
         void (*funcion)(void);
         *(void **) (&funcion) = dlsym(lib, funct);
         if (funcion) {
-            aux_search.lex_comp = FUNCTION;
-            aux_search.lex = functionLib;
-            aux_search.value.pFunction = (int (*)()) funcion;
-            insertar(&table, aux_search);
+            comp_busqueda.lex_comp = FUNCTION;
+            comp_busqueda.lex = funct;
+            comp_busqueda.value.pFunction = (double (*)()) funcion;
+            table_insert(comp_busqueda);
         }
-        return aux_search;
     }
+    table_print();
+    return comp_busqueda;
 }
 
 void table_insert (lex_component component){

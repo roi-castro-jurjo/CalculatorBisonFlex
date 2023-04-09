@@ -13,12 +13,12 @@
 #include <dlfcn.h>
 
 
-int help(){
+double help(){
     printf("This command does nothing to help.\n");
     return EXIT_SUCCESS;
 }
 
-int load(char * file){
+double load(char * file){
     yyin = fopen(file, "r");
 
     if (yyin == NULL){
@@ -26,25 +26,25 @@ int load(char * file){
         yyin = stdin;
         return EXIT_FAILURE;
     } else {
-        setReadingScript(1);
+        //setReadingScript(1);
         fclose(yyin);
         yyin = stdin;
         return EXIT_SUCCESS;
     }
 }
 
-int show_table(){
+double show_table(){
     printf("This command does nothing to show.\n");
     return EXIT_SUCCESS;
 }
 
-int quit(){
+double quit(){
     yylex_destroy();
     table_free();
     exit(EXIT_SUCCESS);
 }
 
-int import_lib(char *lib) {
+double import_lib(char *lib) {
     void *library = dlopen(lib, RTLD_LAZY);
     if (library == NULL) {
         error_show(CANT_OPEN_LIBRARY);
@@ -73,17 +73,17 @@ int import_lib(char *lib) {
     return EXIT_SUCCESS;
 }
 
-int clear(){
+double clear(){
+    printf("\033c");
+    return EXIT_SUCCESS;
+}
+
+double clear_ws(){
     printf("This command does nothing to quit.\n");
     return EXIT_SUCCESS;
 }
 
-int clear_ws(){
-    printf("This command does nothing to quit.\n");
-    return EXIT_SUCCESS;
-}
-
-int show_ws(){
+double show_ws(){
     printf("This command does nothing to quit.\n");
     return EXIT_SUCCESS;
 }

@@ -5,20 +5,20 @@
 #ifndef CALCULATORBF_COMMANDS_H
 #define CALCULATORBF_COMMANDS_H
 
-int help();
+double help();
 
-int load(char * file);
+double load(char * file);
 
-int show_table();
+double show_table();
 
-int show_ws();
+double show_ws();
 
-int quit();
+double quit();
 
-int import_lib(char * lib);
+double import_lib(char * lib);
 
-int clear();
+double clear();
 
-int clear_ws();
+double clear_ws();
 
 #endif //CALCULATORBF_COMMANDS_H
