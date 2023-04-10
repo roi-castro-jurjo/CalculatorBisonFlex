@@ -296,7 +296,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                             char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
                                                             sprintf(library, "%s/%s", $1, $3);
 
-                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
+                                                            lex_component function = table_functSearch( $3, component.value.lib);
 
                                                             if (function.lex != NULL) {
                                                                 $$ = function.value.pFunction($5);
@@ -315,7 +315,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                             char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
                                                             sprintf(library, "%s/%s", $1, $3);
 
-                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
+                                                            lex_component function = table_functSearch( $3, component.value.lib);
 
                                                             if (function.lex != NULL) {
                                                                 $$ = function.value.pFunction($5);
@@ -334,7 +334,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                             char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
                                                                             sprintf(library, "%s/%s", $1, $3);
 
-                                                                            lex_component function = table_functSearch( $3, component.value.lib, library);
+                                                                            lex_component function = table_functSearch( $3, component.value.lib);
 
                                                                             if (function.lex != NULL) {
                                                                                 $$ = function.value.pFunction($5);
@@ -346,6 +346,20 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                             free(library);
                                                                             free($1);
                                                                             free($3);
+                                                                        }
+            | FUNCTION '(' expression ')'                               {
+                                                                            component = table_lexSearch($1);
+
+                                                                            lex_component function = table_functSearch( $1, component.value.lib);
+
+                                                                            if (function.lex != NULL) {
+                                                                                $$ = function.value.pFunction($3);
+                                                                            } else {
+                                                                                error_show(UNDEFINED_FUNCTION);
+                                                                                error = 1;
+                                                                                $$ = set_nan();
+                                                                            }
+                                                                            free($1);
                                                                         }
             | LIBRARY '/' VARIABLE '(' ')'                              {
                                                                             error_show(MISSING_ARGUMENTS);
