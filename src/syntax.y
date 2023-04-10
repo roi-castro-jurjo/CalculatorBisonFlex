@@ -59,77 +59,37 @@ line:         '\n'                      {
                                             PRINT_PROMPT
                                         }
             | expression '\n'           {
-                                            if(!error){
-                                                if (doEcho){
-                                                    printf("%lf", $1);
-                                                }
-                                            }
+
+                                            printf("\n%lf", $1);
                                             PRINT_PROMPT
-                                            error = 0;
                                         }
             | expression ';' '\n'       {
-                                             if(!error){
-                                                 if (doEcho){
-                                                    printf("%lf", $1);
-                                                 }
-                                             }
-                                             PRINT_PROMPT
-                                             error = 0;
-                                         }
-            | assign '\n'                {
-                                             if(!error){
-                                                 if (doEcho){
-                                                    printf("%lf", $1);
-                                                 }
-                                             }
-                                             PRINT_PROMPT
-                                             error = 0;
-                                         }
-            | assign ';' '\n'            {
-                                             if(!error){
-                                                 if (doEcho){
-                                                    printf("%lf", $1);
-                                                 }
-                                             }
-                                             PRINT_PROMPT
-                                             error = 0;
-                                         }
-            | command '\n'               {
-                                              if(!error){
-                                                  if (doEcho){
-                                                    printf("%lf", $1);
-                                                  }
-                                              }
-                                              PRINT_PROMPT
-                                              error = 0;
-                                          }
-            | command ';' '\n'            {
-                                              if(!error){
-                                                  if (doEcho){
-                                                    printf("%lf", $1);
-                                                  }
-                                              }
-                                              PRINT_PROMPT
-                                              error = 0;
-                                          }
-            | function '\n'               {
-                                               if(!error){
-                                                   if (doEcho){
-                                                       printf("%lf", $1);
-                                                   }
-                                               }
-                                               PRINT_PROMPT
-                                               error = 0;
-                                           }
-            | function ';' '\n'            {
-                                               if(!error){
-                                                   if (doEcho){
-                                                      printf("%lf", $1);
-                                                   }
-                                               }
-                                               PRINT_PROMPT
-                                               error = 0;
-                                           }
+                                            printf("\n%lf", $1);
+                                            PRINT_PROMPT
+
+                                        }
+            | assign '\n'               {
+                                            printf("\n%lf", $1);
+                                            PRINT_PROMPT
+                                        }
+            | assign ';' '\n'           {
+                                            printf("\n%lf", $1);
+                                            PRINT_PROMPT
+                                        }
+            | command '\n'              {
+                                            PRINT_PROMPT
+                                        }
+            | command ';' '\n'          {
+                                            PRINT_PROMPT
+                                        }
+            | function '\n'             {
+                                            printf("\n%lf", $1);
+                                            PRINT_PROMPT
+                                        }
+            | function ';' '\n'         {
+                                            printf("\n%lf", $1);
+                                            PRINT_PROMPT
+                                        }
 ;
 
 expression:   NUMBER
@@ -144,7 +104,6 @@ expression:   NUMBER
                                                     $$ = component.value.variable;
                                                 } else{
                                                     error_show(UNDEFINED_VARIABLE);
-                                                    error = 1;
                                                     $$ = set_nan();
                                                 }
 
@@ -165,7 +124,6 @@ expression:   NUMBER
             | expression '/' expression     {
                                                 if($3 == 0){
                                                     error_show(MOD_DIV_ZERO);
-                                                    error = 1;
                                                     $$ = set_nan();
                                                 } else {
                                                     $$ = $1 / $3;
@@ -174,7 +132,6 @@ expression:   NUMBER
             | expression '%' expression     {
                                                 if($3 == 0){
                                                     error_show(MOD_DIV_ZERO);
-                                                    error = 1;
                                                     $$ = set_nan();
                                                 } else {
                                                     $$ = module($1, $3);
@@ -189,54 +146,51 @@ expression:   NUMBER
 ;
 
 assign:       VARIABLE '=' expression       {
-                                                if (!error){
-                                                    component = table_lexSearch($1);
-                                                    if (component.lex != NULL){
-                                                        table_reassignLexeme($1, $3);
-                                                    } else {
-                                                        component.lex = malloc(strlen($1) + sizeof(char));
-                                                        strcpy(component.lex, $1);
-                                                        component.lex_comp = VARIABLE;
-                                                        component.value.variable = $3;
-                                                        table_insert(component);
-                                                        free(component.lex);
-                                                    }
+
+                                                component = table_lexSearch($1);
+                                                if (component.lex != NULL){
+                                                    table_reassignLexeme($1, $3);
+                                                } else {
+                                                    component.lex = malloc(strlen($1) + sizeof(char));
+                                                    strcpy(component.lex, $1);
+                                                    component.lex_comp = VARIABLE;
+                                                    component.value.variable = $3;
+                                                    table_insert(component);
+                                                    free(component.lex);
                                                 }
+
                                                 $$ = $3;
                                                 free($1);
                                             }
             | VARIABLE '=' function         {
-                                                if (!error){
-                                                    component = table_lexSearch($1);
-                                                    if (component.lex != NULL){
-                                                        table_reassignLexeme($1, $3);
-                                                    } else {
-                                                        component.lex = malloc(strlen($1));
-                                                        strcpy(component.lex, $1);
-                                                        component.lex_comp = VARIABLE;
-                                                        component.value.variable = $3;
-                                                        table_insert(component);
-                                                        free(component.lex);
-                                                    }
+
+                                                component = table_lexSearch($1);
+                                                if (component.lex != NULL){
+                                                    table_reassignLexeme($1, $3);
+                                                } else {
+                                                    component.lex = malloc(strlen($1));
+                                                    strcpy(component.lex, $1);
+                                                    component.lex_comp = VARIABLE;
+                                                    component.value.variable = $3;
+                                                    table_insert(component);
+                                                    free(component.lex);
                                                 }
+
                                                 $$ = $3;
                                                 free($1);
                                             }
             | CONSTANT '=' expression       {
                                                 error_show(ASSIGN_CONSTANT);
-                                                error = 1;
                                                 $$ = set_nan();
                                                 free($1);
                                             }
             | CONSTANT '=' function         {
                                                 error_show(ASSIGN_CONSTANT);
-                                                error = 1;
                                                 $$ = set_nan();
                                                 free($1);
                                             }
             | NUMBER '=' expression         {
                                                 error_show(SYNTAX_ERROR);
-                                                error = 1;
                                                 $$ = set_nan();
                                             }
 ;
@@ -245,34 +199,28 @@ command:      COMMAND1                      {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
-                                                error = 1;
                                             }
             | COMMAND1 '(' ')'              {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
-                                                error = 1;
                                              }
             | COMMAND1 '(' expression ')'    {
                                                 error_show(SYNTAX_ERROR);
-                                                error = 1;
                                                 $$ = set_nan();
                                              }
             | COMMAND2 expression            {
                                                 error_show(BAD_SOURCE_FILE);
-                                                error = 1;
                                                 $$ = set_nan();
                                                 free($1);
                                              }
             | COMMAND2                       {
                                                 error_show(BAD_SOURCE_FILE);
-                                                error = 1;
                                                 $$ = set_nan();
                                                 free($1);
                                              }
             | COMMAND2 '(' ')'               {
                                                 error_show(BAD_SOURCE_FILE);
-                                                error = 1;
                                                 $$ = set_nan();
                                                 free($1);
                                              }
@@ -298,6 +246,14 @@ command:      COMMAND1                      {
                                                         free($3);
                                                         free($4);
                                                     }
+            | COMMAND2 VARIABLE COMMAND2 VARIABLE    {
+                                                        error_show(LIBRARY_NOT_FOUND);
+
+                                                        free($1);
+                                                        free($2);
+                                                        free($3);
+                                                        free($4);
+                                                    }
 ;
 
 function:     LIBRARY '/' VARIABLE '(' expression ')'   {
@@ -309,7 +265,6 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                 $$ = function.value.pFunction($5);
                                                             } else {
                                                                 error_show(UNDEFINED_FUNCTION);
-                                                                error = 1;
                                                                 $$ = set_nan();
                                                             }
                                                             free($1);
@@ -324,7 +279,6 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                 $$ = function.value.pFunction($5);
                                                             } else {
                                                                 error_show(UNDEFINED_FUNCTION);
-                                                                error = 1;
                                                                 $$ = set_nan();
                                                             }
                                                             free($1);
@@ -340,7 +294,6 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                                 $$ = function.value.pFunction($5, $7);
                                                                             } else {
                                                                                 error_show(UNDEFINED_FUNCTION);
-                                                                                error = 1;
                                                                                 $$ = set_nan();
                                                                             }
                                                                             free($1);
@@ -355,29 +308,24 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                                 $$ = function.value.pFunction($3);
                                                                             } else {
                                                                                 error_show(UNDEFINED_FUNCTION);
-                                                                                error = 1;
                                                                                 $$ = set_nan();
                                                                             }
                                                                             free($1);
                                                                         }
             | LIBRARY '/' VARIABLE '(' ')'                              {
                                                                             error_show(MISSING_ARGUMENTS);
-                                                                            error = 1;
                                                                             $$ = set_nan();
                                                                         }
             | expression '(' expression ')'                             {
                                                                             error_show(MISSING_ARGUMENTS);
-                                                                            error = 1;
                                                                             $$ = set_nan();
                                                                         }
             | expression '(' expression ',' expression ')'              {
                                                                             error_show(MISSING_ARGUMENTS);
-                                                                            error = 1;
                                                                             $$ = set_nan();
                                                                         }
             | expression '(' ')'                            {
                                                                 error_show(MISSING_ARGUMENTS);
-                                                                error = 1;
                                                                 $$ = set_nan();
                                                             }
 ;
