@@ -194,7 +194,7 @@ assign:       VARIABLE '=' expression       {
                                                     if (component.lex != NULL){
                                                         table_reassignLexeme($1, $3);
                                                     } else {
-                                                        component.lex = malloc(strlen($1));
+                                                        component.lex = malloc(strlen($1) + sizeof(char));
                                                         strcpy(component.lex, $1);
                                                         component.lex_comp = VARIABLE;
                                                         component.value.variable = $3;
@@ -288,13 +288,20 @@ command:      COMMAND1                      {
                                                  free($1);
                                                  free($3);
                                               }
+            | COMMAND2 LIBRARY COMMAND2 VARIABLE    {
+                                                        component = table_lexSearch($2);
+
+                                                        table_functSearch( $4, component.value.lib);
+
+                                                        free($1);
+                                                        free($2);
+                                                        free($3);
+                                                        free($4);
+                                                    }
 ;
 
 function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                             component = table_lexSearch($1);
-
-                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
-                                                            sprintf(library, "%s/%s", $1, $3);
 
                                                             lex_component function = table_functSearch( $3, component.value.lib);
 
@@ -305,16 +312,12 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                 error = 1;
                                                                 $$ = set_nan();
                                                             }
-                                                            free(library);
                                                             free($1);
                                                             free($3);
                                                         }
             | LIBRARY '/' FUNCTION '(' expression ')'     {
                                                             component = table_lexSearch($1);
 
-                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
-                                                            sprintf(library, "%s/%s", $1, $3);
-
                                                             lex_component function = table_functSearch( $3, component.value.lib);
 
                                                             if (function.lex != NULL) {
@@ -324,26 +327,22 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                 error = 1;
                                                                 $$ = set_nan();
                                                             }
-                                                            free(library);
                                                             free($1);
                                                             free($3);
                                                         }
             | LIBRARY '/' VARIABLE '(' expression ',' expression ')'    {
                                                                             component = table_lexSearch($1);
 
-                                                                            char *library = malloc((strlen($1) + strlen($3) + 2) * sizeof(char));
-                                                                            sprintf(library, "%s/%s", $1, $3);
 
                                                                             lex_component function = table_functSearch( $3, component.value.lib);
 
                                                                             if (function.lex != NULL) {
-                                                                                $$ = function.value.pFunction($5);
+                                                                                $$ = function.value.pFunction($5, $7);
                                                                             } else {
                                                                                 error_show(UNDEFINED_FUNCTION);
                                                                                 error = 1;
                                                                                 $$ = set_nan();
                                                                             }
-                                                                            free(library);
                                                                             free($1);
                                                                             free($3);
                                                                         }

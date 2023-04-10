@@ -12,8 +12,6 @@
 // Declaracion de la Tabla de simbolos
 abb table;
 
-int var_num = 0;
-
 lex_component table_lexSearch(char * lexeme){
     tipoelem aux_search;
     aux_search.lex = NULL;
@@ -41,9 +39,6 @@ lex_component table_functSearch(char * funct, void * lib){
 }
 
 void table_insert (lex_component component){
-    if (component.lex_comp == VARIABLE) {
-        var_num++;
-    }
     insertar(&table, component);
 }
 void table_reassignLexeme(char * lexeme, double val){
@@ -76,8 +71,8 @@ void table_create(){
     crear(&table);
 
     tipoelem inicializacion[] = {
-            {CONSTANT, "PI", .value.variable=3.14159265358979},
-            {CONSTANT, "e", .value.variable=2.71828182845904},
+            {CONSTANT, "PI", .value.variable=3.141592653589793},
+            {CONSTANT, "e", .value.variable=2.718281828459045},
             {COMMAND1, "help", .value.pFunction=help},
             {COMMAND2, "load", .value.pFunction=load},
             {COMMAND2, "import", .value.pFunction=import_lib},
@@ -86,6 +81,8 @@ void table_create(){
             {COMMAND1, "clear", .value.pFunction=clear},
             {COMMAND1, "clearws", .value.pFunction=clear_ws},
             {COMMAND1, "quit", .value.pFunction=quit},
+            {COMMAND2, "from", .value.pFunction=import_lib},
+            {COMMAND2, "use"},
     };
 
     for (int i = 0; i < (sizeof(inicializacion) / sizeof(tipoelem)); i++) {

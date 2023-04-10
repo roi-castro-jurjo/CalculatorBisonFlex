@@ -23,12 +23,10 @@ double load(char * file){
 
     if (yyin == NULL){
         error_show(BAD_SOURCE_FILE);
-        yyin = stdin;
+        yyrestart(stdin);
         return EXIT_FAILURE;
     } else {
-        //setReadingScript(1);
-        fclose(yyin);
-        yyin = stdin;
+        setReadingScript(1);
         return EXIT_SUCCESS;
     }
 }
