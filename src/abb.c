@@ -130,7 +130,7 @@ void print(abb A){
             printf("║  CONSTANT  ║ %-10s ║ %.7lf ║\n", aux.lex, aux.value.variable);
         } else if (aux.lex_comp == VARIABLE){
             printf("╠════════════╬════════════╬═══════════╣\n");
-            printf("║  VARIABLE  ║ %-10s ║ %.7lf ║\n", aux.lex, aux.value.variable);
+            printf("║  VARIABLE  ║ %-10s ║ %-9g ║\n", aux.lex, aux.value.variable);
         } else if (aux.lex_comp == FUNCTION){
             printf("╠════════════╬════════════╬═══════════╣\n");
             printf("║  FUNCTION  ║ %-10s ║ NOT VALUE ║\n", aux.lex);
@@ -146,6 +146,20 @@ void print(abb A){
     }
 }
 
+void print_ws(abb A){
+    tipoelem aux;
+    if (!es_vacio(A)){
+        print_ws(A->izq);
+
+        leer(A, &aux);
+
+        if (aux.lex_comp == VARIABLE){
+            printf("╠════════════╬════════════╬═══════════╣\n");
+            printf("║  VARIABLE  ║ %-10s ║ %-9g ║\n", aux.lex, aux.value.variable);
+        }
+        print_ws(A->der);
+    }
+}
 
 
 
@@ -238,4 +252,19 @@ void _modificar(abb A, tipoclave cl, tipoelem nodo) {
 void modificar(abb A, tipoelem nodo) {
     tipoclave cl = _clave_elem(&nodo);
     _modificar(A, cl, nodo);
+}
+
+void reset_ws(abb A){
+    tipoelem aux;
+    if (!es_vacio(A)){
+        reset_ws(A->izq);
+
+        leer(A, &aux);
+
+        reset_ws(A->der);
+
+        if (aux.lex_comp == VARIABLE){
+            suprimir(&A, aux);
+        }
+    }
 }

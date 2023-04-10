@@ -76,6 +76,7 @@ void buscar_nodo(abb A, tipoclave cl, tipoelem *nodo);
  */
 void print(abb A);
 
+void print_ws(abb A);
 
 
 //FUNCIONES DE MODIFICACIÓN
@@ -99,6 +100,8 @@ void suprimir(abb *A,tipoelem E);
  * @param nodo
  */
 void modificar(abb A, tipoelem nodo);
+
+void reset_ws(abb A);
 
 #endif	// ABB_H
 

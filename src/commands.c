@@ -34,7 +34,7 @@ double load(char * file){
 }
 
 double show_table(){
-    printf("This command does nothing to show.\n");
+    table_print();
     return EXIT_SUCCESS;
 }
 
@@ -79,11 +79,11 @@ double clear(){
 }
 
 double clear_ws(){
-    printf("This command does nothing to quit.\n");
+    table_resetWorkSpace();
     return EXIT_SUCCESS;
 }
 
 double show_ws(){
-    printf("This command does nothing to quit.\n");
+    table_printWorkSpace();
     return EXIT_SUCCESS;
 }

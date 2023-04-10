@@ -22,7 +22,7 @@ lex_component table_lexSearch(char * lexeme){
 
 }
 
-lex_component table_functSearch(char * funct, void * lib, char * functionLib){
+lex_component table_functSearch(char * funct, void * lib){
     tipoelem comp_busqueda = {0, NULL};
     buscar_nodo(table, funct, &comp_busqueda);
 
@@ -58,11 +58,17 @@ void table_reassignLexeme(char * lexeme, double val){
 }
 
 void table_resetWorkSpace(){
-    printf("Falta por implementar table_resetWorkSpace() en tabla_simbolos.c.\n");
+    reset_ws(table);
 }
 
 void table_printWorkSpace(){
-    printf("Falta por implementar table_printWorkSpace() en tabla_simbolos.c.\n");
+    printf("\n\n");
+    printf("╔═════════════════════════════════════╗\n");
+    printf("║              WORK_SPACE             ║\n");
+    printf("╠════════════╦════════════╦═══════════╣\n");
+    printf("║    TYPE    ║     ID     ║    VAL    ║\n");
+    print_ws(table);
+    printf("╚════════════╩════════════╩═══════════╝\n\n");
 }
 
 void table_create(){
