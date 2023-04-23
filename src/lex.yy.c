@@ -852,12 +852,13 @@ case YY_STATE_EOF(INITIAL):
                 setReadingScript(0);
                 fclose(yyin);
                 yyrestart(stdin);
+                table_print();
                 printf("\n>> ");
             }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 76 "lexic.l"
+#line 77 "lexic.l"
 {
                 int next_char;
                 // Establecemos un contador de /+ para abarcar correctamente todos los comentarios anidados
@@ -884,28 +885,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 99 "lexic.l"
+#line 100 "lexic.l"
 
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 100 "lexic.l"
+#line 101 "lexic.l"
 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 102 "lexic.l"
+#line 103 "lexic.l"
 {
                 error_show(LEXICAL_ERROR);
             }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 106 "lexic.l"
+#line 107 "lexic.l"
 ECHO;
 	YY_BREAK
-#line 909 "lex.yy.c"
+#line 910 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1908,7 +1909,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 106 "lexic.l"
+#line 107 "lexic.l"
 
 
  void yyerror (char const *s) {
