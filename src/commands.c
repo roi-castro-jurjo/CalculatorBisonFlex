@@ -13,7 +13,24 @@
 
 
 double help(){
-    printf("This command does nothing to help.\n");
+    printf("# COMANDOS\n"
+           "\n"
+           "- stable: muestra la tabla de simbolos\n"
+           "- sws: muestra el espacio de trabajo\n"
+           "- clear: borra lo escrito en la consola\n"
+           "- clearws: elimina todas las variables del workspace\n"
+           "- quit: cierra el programa\n"
+           "- help: muestra la ayuda\n"
+           "- load: carga un fichero y lo ejecuta. Se imprimirá la tabla de simbolos al terminar de ejecutar el fichero.\n"
+           "- import: importa una libreria. Se debe indicar su archivo .so. Por ejemplo, para usar la funcion \"sin()\"\", se debe usar \"import libm.so.6\". Una vez importada una libreria, se pueden usar sus funciones usando \"from LIBRARY use FUNCTION\", o \"LIBRARY/FUNCTION\".\n"
+           "\t- EJEMPLO: import libm.so.6 -> from libm use sin -> sin(PI/2) (Esta secuencia de comandos devuelve 1)\n"
+           "- from LIBRARY use FUNCTION\n"
+           "\n"
+           "# SYNTAX\n"
+           "\n"
+           "TERMINAL: En cada linea de la terminal se escribe una expression. Las operaciones soportadas son \"+\", \"-\", \"/\", \"*\", \"^\", \"<\", \">\", y \"%\". Para asignar valor a una variable se usa \"VARIABLE = VALOR\". Para ejecutar un comando, se escribe seguido de sus argumentos. Las funciones funcionan de forma identica a los comandos.Si se añade \";\" al final de una sentencia, no se imprimirá el output de la misma.\n"
+           "\n"
+           "ARCHIVO: Sintaxis identida a la terminal, pero cada linea ha de terminar con \";\".");
     return EXIT_SUCCESS;
 }
 

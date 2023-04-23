@@ -118,7 +118,10 @@ double set_nan();
 # define YYERROR_VERBOSE 0
 #endif
 
-
+/* Use api.header.include to #include this header
+   instead of duplicating it here.  */
+#ifndef YY_YY_SYNTAX_TAB_H_INCLUDED
+# define YY_YY_SYNTAX_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -155,7 +158,7 @@ union YYSTYPE
     double number;
     char *string;
 
-#line 159 "syntax.tab.c"
+#line 162 "syntax.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -168,7 +171,7 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-
+#endif /* !YY_YY_SYNTAX_TAB_H_INCLUDED  */
 
 
 
@@ -531,12 +534,12 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    55,    55,    58,    61,    64,    69,    73,    77,    80,
-      83,    86,    90,    93,    96,   101,   102,   107,   118,   121,
-     124,   127,   130,   138,   146,   149,   154,   161,   171,   188,
-     205,   209,   213,   217,   222,   227,   232,   236,   241,   246,
-     251,   257,   263,   272,   280,   293,   307,   321,   336,   349,
-     353,   357,   361
+       0,    53,    53,    56,    59,    62,    67,    71,    75,    78,
+      81,    84,    88,    91,    94,    99,   100,   105,   116,   119,
+     122,   125,   128,   136,   144,   147,   152,   159,   169,   186,
+     203,   207,   211,   215,   220,   225,   230,   234,   239,   244,
+     249,   255,   261,   270,   278,   291,   305,   319,   334,   347,
+     351,   355,   359
 };
 #endif
 
@@ -579,14 +582,14 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     -26,    47,   -26,   -25,     5,    31,    -4,    37,   119,    21,
-      52,   130,   -26,   130,   -26,   161,    -7,     7,     9,    22,
+     -26,    47,   -26,   -25,   -17,   -15,    -4,    35,   119,    21,
+      15,   130,   -26,   130,   -26,   161,    -7,     7,     9,    22,
      130,   103,   115,   130,    58,   -26,   -26,   -26,   -26,    12,
-      84,    68,    72,    78,    43,    70,   -11,   130,   130,   130,
-     130,   130,   130,   -26,    50,    61,   130,   130,   -26,    71,
-     -26,    93,   -26,    95,   -26,    97,    84,   229,   -26,   -26,
-     229,   -26,   174,   -26,   185,    67,   -26,    87,   122,   124,
-     108,   114,   -26,    60,    60,    -8,    -8,    70,    70,   -26,
+      84,    49,    60,    65,    43,    57,   -11,   130,   130,   130,
+     130,   130,   130,   -26,    48,    61,   130,   130,   -26,    59,
+     -26,    62,   -26,    68,   -26,    69,    84,   229,   -26,   -26,
+     229,   -26,   174,   -26,   185,    54,   -26,    73,    85,    86,
+      70,    91,   -26,    57,    57,    57,    57,    57,    57,   -26,
      -26,   131,    84,    84,   -26,   -26,   -26,   -26,   -26,   -26,
      -26,   -26,   -26,   -26,    82,   130,   -26,   130,   -26,   146,
      196,   207,   -26,   130,   -26,   -26,   218,   -26
@@ -613,7 +616,7 @@ static const yytype_int8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -26,   -26,   -26,    -1,   -26,   -26,   117,    51
+     -26,   -26,   -26,    -1,   -26,   -26,    94,    51
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -627,20 +630,20 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      15,    20,    37,    38,    39,    40,    41,    30,    42,    41,
-      35,    42,    72,    48,    49,    25,    26,    27,    23,    56,
+      15,    20,    37,    38,    39,    40,    41,    30,    42,    21,
+      35,    22,    72,    48,    49,    25,    26,    27,    23,    56,
       57,    60,    62,    64,    65,    11,    31,    50,    51,    52,
-      53,    21,    32,    33,    13,    66,    73,    74,    75,    76,
+      53,    34,    32,    33,    13,    66,    73,    74,    75,    76,
       77,    78,    54,    55,    81,    82,    83,     2,    70,    71,
-       3,     4,     5,     6,     7,     8,     9,    22,    10,    24,
-      11,    25,    26,    27,    25,    26,    27,    12,    34,    13,
-      79,    11,    59,    61,    11,    39,    40,    41,    67,    42,
-      13,    63,    68,    13,    80,    25,    26,    27,    69,    42,
-      90,    84,    91,    99,   100,    11,   101,    37,    38,    39,
+       3,     4,     5,     6,     7,     8,     9,    24,    10,    67,
+      11,    25,    26,    27,    25,    26,    27,    12,    79,    13,
+      68,    11,    59,    61,    11,    69,    42,    90,    91,    84,
+      13,    63,    85,    13,    80,    25,    26,    27,    86,    87,
+      92,    93,    94,    99,   100,    11,   101,    37,    38,    39,
       40,    41,   106,    42,    13,    98,    25,    26,    27,     6,
-       7,     8,     9,    85,    10,    86,    11,    87,    25,    26,
-      27,     6,    25,    26,    27,    13,    10,    92,    11,    93,
-      94,    28,    11,    25,    26,    27,    95,    13,    58,     0,
+       7,     8,     9,    95,    10,    58,    11,     0,    25,    26,
+      27,     6,    25,    26,    27,    13,    10,     0,    11,     0,
+       0,    28,    11,    25,    26,    27,     0,    13,     0,     0,
        0,    29,     0,    11,    37,    38,    39,    40,    41,     0,
       42,     0,    13,     0,    96,     0,     0,     0,    97,    37,
       38,    39,    40,    41,     0,    42,     0,     0,     0,   102,
@@ -657,20 +660,20 @@ static const yytype_int8 yytable[] =
 
 static const yytype_int8 yycheck[] =
 {
-       1,    26,    13,    14,    15,    16,    17,     8,    19,    17,
-      11,    19,    23,    20,    21,     3,     4,     5,    22,    20,
+       1,    26,    13,    14,    15,    16,    17,     8,    19,    26,
+      11,    26,    23,    20,    21,     3,     4,     5,    22,    20,
       21,    22,    23,    24,    12,    13,     5,    20,    21,    20,
-      21,    26,    11,    12,    22,    23,    37,    38,    39,    40,
+      21,    16,    11,    12,    22,    23,    37,    38,    39,    40,
       41,    42,    20,    21,    45,    46,    47,     0,     5,     6,
-       3,     4,     5,     6,     7,     8,     9,    26,    11,    22,
-      13,     3,     4,     5,     3,     4,     5,    20,    16,    22,
-      20,    13,    21,    22,    13,    15,    16,    17,    10,    19,
-      22,    23,    10,    22,    23,     3,     4,     5,    10,    19,
-      23,    20,     5,    94,    95,    13,    97,    13,    14,    15,
+       3,     4,     5,     6,     7,     8,     9,    22,    11,    10,
+      13,     3,     4,     5,     3,     4,     5,    20,    20,    22,
+      10,    13,    21,    22,    13,    10,    19,    23,     5,    20,
+      22,    23,    20,    22,    23,     3,     4,     5,    20,    20,
+       5,     5,    22,    94,    95,    13,    97,    13,    14,    15,
       16,    17,   103,    19,    22,    23,     3,     4,     5,     6,
-       7,     8,     9,    20,    11,    20,    13,    20,     3,     4,
-       5,     6,     3,     4,     5,    22,    11,     5,    13,     5,
-      22,    12,    13,     3,     4,     5,    22,    22,    21,    -1,
+       7,     8,     9,    22,    11,    21,    13,    -1,     3,     4,
+       5,     6,     3,     4,     5,    22,    11,    -1,    13,    -1,
+      -1,    12,    13,     3,     4,     5,    -1,    22,    -1,    -1,
       -1,    22,    -1,    13,    13,    14,    15,    16,    17,    -1,
       19,    -1,    22,    -1,    23,    -1,    -1,    -1,    27,    13,
       14,    15,    16,    17,    -1,    19,    -1,    -1,    -1,    23,
@@ -1417,118 +1420,118 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 55 "syntax.y"
+#line 53 "syntax.y"
                                 {
                                     PRINT_PROMPT
                                 }
-#line 1425 "syntax.tab.c"
+#line 1428 "syntax.tab.c"
     break;
 
   case 4:
-#line 61 "syntax.y"
+#line 59 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1433 "syntax.tab.c"
+#line 1436 "syntax.tab.c"
     break;
 
   case 5:
-#line 64 "syntax.y"
+#line 62 "syntax.y"
                                         {
 
                                             printf("\n%lf", (yyvsp[-1].number));
                                             PRINT_PROMPT
                                         }
-#line 1443 "syntax.tab.c"
+#line 1446 "syntax.tab.c"
     break;
 
   case 6:
-#line 69 "syntax.y"
+#line 67 "syntax.y"
                                         {
                                             PRINT_PROMPT
 
                                         }
-#line 1452 "syntax.tab.c"
+#line 1455 "syntax.tab.c"
     break;
 
   case 7:
-#line 73 "syntax.y"
+#line 71 "syntax.y"
                                         {
                                             printf("\n%lf", (yyvsp[-1].number));
                                             PRINT_PROMPT
                                         }
-#line 1461 "syntax.tab.c"
+#line 1464 "syntax.tab.c"
     break;
 
   case 8:
-#line 77 "syntax.y"
+#line 75 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1469 "syntax.tab.c"
+#line 1472 "syntax.tab.c"
     break;
 
   case 9:
-#line 80 "syntax.y"
+#line 78 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1477 "syntax.tab.c"
+#line 1480 "syntax.tab.c"
     break;
 
   case 10:
-#line 83 "syntax.y"
+#line 81 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1485 "syntax.tab.c"
+#line 1488 "syntax.tab.c"
     break;
 
   case 11:
-#line 86 "syntax.y"
+#line 84 "syntax.y"
                                         {
                                             printf("\n%lf", (yyvsp[-1].number));
                                             PRINT_PROMPT
                                         }
-#line 1494 "syntax.tab.c"
+#line 1497 "syntax.tab.c"
     break;
 
   case 12:
-#line 90 "syntax.y"
+#line 88 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1502 "syntax.tab.c"
+#line 1505 "syntax.tab.c"
     break;
 
   case 13:
-#line 93 "syntax.y"
+#line 91 "syntax.y"
                                         {
                                             PRINT_PROMPT
                                         }
-#line 1510 "syntax.tab.c"
+#line 1513 "syntax.tab.c"
     break;
 
   case 14:
-#line 96 "syntax.y"
+#line 94 "syntax.y"
                                             {
                                             PRINT_PROMPT
                                         }
-#line 1518 "syntax.tab.c"
+#line 1521 "syntax.tab.c"
     break;
 
   case 16:
-#line 102 "syntax.y"
+#line 100 "syntax.y"
                                             {
                                                 component = table_lexSearch((yyvsp[0].string));
                                                 (yyval.number) = component.value.variable;
                                                 free((yyvsp[0].string));
                                             }
-#line 1528 "syntax.tab.c"
+#line 1531 "syntax.tab.c"
     break;
 
   case 17:
-#line 107 "syntax.y"
+#line 105 "syntax.y"
                                             {
                                                 component = table_lexSearch((yyvsp[0].string));
                                                 if (component.lex != NULL){
@@ -1540,43 +1543,43 @@ yyreduce:
 
                                                 free((yyvsp[0].string));
                                             }
-#line 1544 "syntax.tab.c"
+#line 1547 "syntax.tab.c"
     break;
 
   case 18:
-#line 118 "syntax.y"
+#line 116 "syntax.y"
                                             {
                                                 (yyval.number) = -(yyvsp[0].number);
                                             }
-#line 1552 "syntax.tab.c"
+#line 1555 "syntax.tab.c"
     break;
 
   case 19:
-#line 121 "syntax.y"
+#line 119 "syntax.y"
                                             {
                                                 (yyval.number) = (yyvsp[-2].number) + (yyvsp[0].number);
                                             }
-#line 1560 "syntax.tab.c"
+#line 1563 "syntax.tab.c"
     break;
 
   case 20:
-#line 124 "syntax.y"
+#line 122 "syntax.y"
                                             {
                                                 (yyval.number) = (yyvsp[-2].number) - (yyvsp[0].number);
                                             }
-#line 1568 "syntax.tab.c"
+#line 1571 "syntax.tab.c"
     break;
 
   case 21:
-#line 127 "syntax.y"
+#line 125 "syntax.y"
                                             {
                                                  (yyval.number) = (yyvsp[-2].number) * (yyvsp[0].number);
                                             }
-#line 1576 "syntax.tab.c"
+#line 1579 "syntax.tab.c"
     break;
 
   case 22:
-#line 130 "syntax.y"
+#line 128 "syntax.y"
                                             {
                                                 if((yyvsp[0].number) == 0){
                                                     error_show(MOD_DIV_ZERO);
@@ -1585,11 +1588,11 @@ yyreduce:
                                                     (yyval.number) = (yyvsp[-2].number) / (yyvsp[0].number);
                                                 }
                                             }
-#line 1589 "syntax.tab.c"
+#line 1592 "syntax.tab.c"
     break;
 
   case 23:
-#line 138 "syntax.y"
+#line 136 "syntax.y"
                                             {
                                                 if((yyvsp[0].number) == 0){
                                                     error_show(MOD_DIV_ZERO);
@@ -1598,27 +1601,27 @@ yyreduce:
                                                     (yyval.number) = module((yyvsp[-2].number), (yyvsp[0].number));
                                                 }
                                             }
-#line 1602 "syntax.tab.c"
+#line 1605 "syntax.tab.c"
     break;
 
   case 24:
-#line 146 "syntax.y"
+#line 144 "syntax.y"
                                             {
                                                 (yyval.number) = power((yyvsp[-2].number), (yyvsp[0].number));
                                             }
-#line 1610 "syntax.tab.c"
+#line 1613 "syntax.tab.c"
     break;
 
   case 25:
-#line 149 "syntax.y"
+#line 147 "syntax.y"
                                             {
                                                 (yyval.number) = (yyvsp[-1].number);
                                             }
-#line 1618 "syntax.tab.c"
+#line 1621 "syntax.tab.c"
     break;
 
   case 26:
-#line 154 "syntax.y"
+#line 152 "syntax.y"
                                                   {
                                                       if ((yyvsp[-2].number) < (yyvsp[0].number)) {
                                                           printf("true");
@@ -1626,11 +1629,11 @@ yyreduce:
                                                           printf("false");
                                                       }
                                                   }
-#line 1630 "syntax.tab.c"
+#line 1633 "syntax.tab.c"
     break;
 
   case 27:
-#line 161 "syntax.y"
+#line 159 "syntax.y"
                                                   {
                                                       if ((yyvsp[-2].number) > (yyvsp[0].number)) {
                                                           printf("true");
@@ -1638,11 +1641,11 @@ yyreduce:
                                                           printf("false");
                                                       }
                                                   }
-#line 1642 "syntax.tab.c"
+#line 1645 "syntax.tab.c"
     break;
 
   case 28:
-#line 171 "syntax.y"
+#line 169 "syntax.y"
                                             {
 
                                                 component = table_lexSearch((yyvsp[-2].string));
@@ -1660,11 +1663,11 @@ yyreduce:
                                                 (yyval.number) = (yyvsp[0].number);
                                                 free((yyvsp[-2].string));
                                             }
-#line 1664 "syntax.tab.c"
+#line 1667 "syntax.tab.c"
     break;
 
   case 29:
-#line 188 "syntax.y"
+#line 186 "syntax.y"
                                             {
 
                                                 component = table_lexSearch((yyvsp[-2].string));
@@ -1682,127 +1685,127 @@ yyreduce:
                                                 (yyval.number) = (yyvsp[0].number);
                                                 free((yyvsp[-2].string));
                                             }
-#line 1686 "syntax.tab.c"
+#line 1689 "syntax.tab.c"
     break;
 
   case 30:
-#line 205 "syntax.y"
+#line 203 "syntax.y"
                                             {
                                                 error_show(ASSIGN_CONSTANT);
                                                 free((yyvsp[-2].string));
                                             }
-#line 1695 "syntax.tab.c"
+#line 1698 "syntax.tab.c"
     break;
 
   case 31:
-#line 209 "syntax.y"
+#line 207 "syntax.y"
                                             {
                                                 error_show(ASSIGN_CONSTANT);
                                                 free((yyvsp[-2].string));
                                             }
-#line 1704 "syntax.tab.c"
+#line 1707 "syntax.tab.c"
     break;
 
   case 32:
-#line 213 "syntax.y"
+#line 211 "syntax.y"
                                            {
                                                 error_show(ASSIGN_CONSTANT);
                                                 free((yyvsp[-2].string));
                                             }
-#line 1713 "syntax.tab.c"
+#line 1716 "syntax.tab.c"
     break;
 
   case 33:
-#line 217 "syntax.y"
+#line 215 "syntax.y"
                                             {
                                                 error_show(SYNTAX_ERROR);
                                             }
-#line 1721 "syntax.tab.c"
+#line 1724 "syntax.tab.c"
     break;
 
   case 34:
-#line 222 "syntax.y"
+#line 220 "syntax.y"
                                            {
                                                 component = table_lexSearch((yyvsp[0].string));
                                                 component.value.pFunction();
                                                 free((yyvsp[0].string));
                                             }
-#line 1731 "syntax.tab.c"
+#line 1734 "syntax.tab.c"
     break;
 
   case 35:
-#line 227 "syntax.y"
+#line 225 "syntax.y"
                                            {
                                                 component = table_lexSearch((yyvsp[-2].string));
                                                 component.value.pFunction();
                                                 free((yyvsp[-2].string));
                                              }
-#line 1741 "syntax.tab.c"
+#line 1744 "syntax.tab.c"
     break;
 
   case 36:
-#line 232 "syntax.y"
+#line 230 "syntax.y"
                                             {
                                                 error_show(SYNTAX_ERROR);
                                                 (yyval.number) = set_nan();
                                              }
-#line 1750 "syntax.tab.c"
+#line 1753 "syntax.tab.c"
     break;
 
   case 37:
-#line 236 "syntax.y"
+#line 234 "syntax.y"
                                               {
                                                 error_show(BAD_SOURCE_FILE);
                                                 (yyval.number) = set_nan();
                                                 free((yyvsp[-1].string));
                                              }
-#line 1760 "syntax.tab.c"
+#line 1763 "syntax.tab.c"
     break;
 
   case 38:
-#line 241 "syntax.y"
+#line 239 "syntax.y"
                                               {
                                                 error_show(BAD_SOURCE_FILE);
                                                 (yyval.number) = set_nan();
                                                 free((yyvsp[0].string));
                                              }
-#line 1770 "syntax.tab.c"
+#line 1773 "syntax.tab.c"
     break;
 
   case 39:
-#line 246 "syntax.y"
+#line 244 "syntax.y"
                                               {
                                                 error_show(BAD_SOURCE_FILE);
                                                 (yyval.number) = set_nan();
                                                 free((yyvsp[-2].string));
                                              }
-#line 1780 "syntax.tab.c"
+#line 1783 "syntax.tab.c"
     break;
 
   case 40:
-#line 251 "syntax.y"
+#line 249 "syntax.y"
                                               {
                                                 component = table_lexSearch((yyvsp[-1].string));
                                                 component.value.pFunction((yyvsp[0].string));
                                                 free((yyvsp[-1].string));
                                                 free((yyvsp[0].string));
                                              }
-#line 1791 "syntax.tab.c"
+#line 1794 "syntax.tab.c"
     break;
 
   case 41:
-#line 257 "syntax.y"
+#line 255 "syntax.y"
                                               {
                                                  component = table_lexSearch((yyvsp[-3].string));
                                                  component.value.pFunction((yyvsp[-1].string));
                                                  free((yyvsp[-3].string));
                                                  free((yyvsp[-1].string));
                                               }
-#line 1802 "syntax.tab.c"
+#line 1805 "syntax.tab.c"
     break;
 
   case 42:
-#line 263 "syntax.y"
+#line 261 "syntax.y"
                                            {
                                                         component = table_lexSearch((yyvsp[-2].string));
                                                         table_functSearch( (yyvsp[0].string), component.value.lib);
@@ -1812,11 +1815,11 @@ yyreduce:
                                                         free((yyvsp[-1].string));
                                                         free((yyvsp[0].string));
                                                     }
-#line 1816 "syntax.tab.c"
+#line 1819 "syntax.tab.c"
     break;
 
   case 43:
-#line 272 "syntax.y"
+#line 270 "syntax.y"
                                             {
                                                         error_show(LIBRARY_NOT_FOUND);
 
@@ -1825,11 +1828,11 @@ yyreduce:
                                                         free((yyvsp[-1].string));
                                                         free((yyvsp[0].string));
                                                     }
-#line 1829 "syntax.tab.c"
+#line 1832 "syntax.tab.c"
     break;
 
   case 44:
-#line 280 "syntax.y"
+#line 278 "syntax.y"
                                                {
                                                 component = table_lexSearch((yyvsp[-3].string));
                                                 component.value.pFunction((yyvsp[-2].string));
@@ -1841,11 +1844,11 @@ yyreduce:
                                                 free((yyvsp[-1].string));
                                                 free((yyvsp[0].string));
                                             }
-#line 1845 "syntax.tab.c"
+#line 1848 "syntax.tab.c"
     break;
 
   case 45:
-#line 293 "syntax.y"
+#line 291 "syntax.y"
                                                         {
                                                             component = table_lexSearch((yyvsp[-5].string));
 
@@ -1860,11 +1863,11 @@ yyreduce:
                                                             free((yyvsp[-5].string));
                                                             free((yyvsp[-3].string));
                                                         }
-#line 1864 "syntax.tab.c"
+#line 1867 "syntax.tab.c"
     break;
 
   case 46:
-#line 307 "syntax.y"
+#line 305 "syntax.y"
                                                           {
                                                             component = table_lexSearch((yyvsp[-5].string));
 
@@ -1879,11 +1882,11 @@ yyreduce:
                                                             free((yyvsp[-5].string));
                                                             free((yyvsp[-3].string));
                                                         }
-#line 1883 "syntax.tab.c"
+#line 1886 "syntax.tab.c"
     break;
 
   case 47:
-#line 321 "syntax.y"
+#line 319 "syntax.y"
                                                                         {
                                                                             component = table_lexSearch((yyvsp[-7].string));
 
@@ -1899,11 +1902,11 @@ yyreduce:
                                                                             free((yyvsp[-7].string));
                                                                             free((yyvsp[-5].string));
                                                                         }
-#line 1903 "syntax.tab.c"
+#line 1906 "syntax.tab.c"
     break;
 
   case 48:
-#line 336 "syntax.y"
+#line 334 "syntax.y"
                                                                         {
                                                                             component = table_lexSearch((yyvsp[-3].string));
 
@@ -1917,47 +1920,47 @@ yyreduce:
                                                                             }
                                                                             free((yyvsp[-3].string));
                                                                         }
-#line 1921 "syntax.tab.c"
+#line 1924 "syntax.tab.c"
     break;
 
   case 49:
-#line 349 "syntax.y"
+#line 347 "syntax.y"
                                                                         {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             (yyval.number) = set_nan();
                                                                         }
-#line 1930 "syntax.tab.c"
+#line 1933 "syntax.tab.c"
     break;
 
   case 50:
-#line 353 "syntax.y"
+#line 351 "syntax.y"
                                                                         {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             (yyval.number) = set_nan();
                                                                         }
-#line 1939 "syntax.tab.c"
+#line 1942 "syntax.tab.c"
     break;
 
   case 51:
-#line 357 "syntax.y"
+#line 355 "syntax.y"
                                                                         {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             (yyval.number) = set_nan();
                                                                         }
-#line 1948 "syntax.tab.c"
+#line 1951 "syntax.tab.c"
     break;
 
   case 52:
-#line 361 "syntax.y"
+#line 359 "syntax.y"
                                                             {
                                                                 error_show(MISSING_ARGUMENTS);
                                                                 (yyval.number) = set_nan();
                                                             }
-#line 1957 "syntax.tab.c"
+#line 1960 "syntax.tab.c"
     break;
 
 
-#line 1961 "syntax.tab.c"
+#line 1964 "syntax.tab.c"
 
       default: break;
     }
@@ -2189,7 +2192,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 366 "syntax.y"
+#line 364 "syntax.y"
 
 
 void setReadingScript(int value) {

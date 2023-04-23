@@ -45,9 +45,7 @@ double set_nan();
 %token <string> LIBRARY
 %token <string> SOURCE_FILE
 
-%left '-' '+'
-%left '*' '/'
-%left '%'
+%left '-' '+' '*' '/' '%'
 %precedence NEG
 %right '^'
 
@@ -320,10 +318,7 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                         }
             | LIBRARY '/' VARIABLE '(' expression ',' expression ')'    {
                                                                             component = table_lexSearch($1);
-
-
                                                                             lex_component function = table_functSearch( $3, component.value.lib);
-
                                                                             if (function.lex != NULL) {
                                                                                 $$ = function.value.pFunction($5, $7);
                                                                             } else {
@@ -351,10 +346,6 @@ function:     LIBRARY '/' VARIABLE '(' expression ')'   {
                                                                             $$ = set_nan();
                                                                         }
             | expression '(' expression ')'                             {
-                                                                            error_show(MISSING_ARGUMENTS);
-                                                                            $$ = set_nan();
-                                                                        }
-            | expression '(' expression ',' expression ')'              {
                                                                             error_show(MISSING_ARGUMENTS);
                                                                             $$ = set_nan();
                                                                         }
