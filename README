@@ -1,3 +1,24 @@
 # COMANDOS
 
+- stable: muestra la tabla de simbolos
+- sws: muestra el espacio de trabajo
+- clear: borra lo escrito en la consola
+- clearws: elimina todas las variables del workspace
+- quit: cierra el programa
+- help: muestra la ayuda
+- load: carga un fichero y lo ejecuta. Se imprimirá la tabla de simbolos al terminar de ejecutar el fichero.
+- import: importa una libreria. Se debe indicar su archivo .so. Por ejemplo, para usar la funcion "sin()"", se debe usar "import libm.so.6". Una vez importada una libreria, se pueden usar sus funciones usando "from LIBRARY use FUNCTION", o "LIBRARY/FUNCTION".
+	- EJEMPLO: import libm.so.6 -> from libm use sin -> sin(PI/2) (Esta secuencia de comandos devuelve 1)
+- from LIBRARY use FUNCTION
 
+# SYNTAX
+
+TERMINAL: En cada linea de la terminal se escribe una expression. Las operaciones soportadas son "+", "-", "/", "*", "^", "<", ">", y "%". Para asignar valor a una variable se usa "VARIABLE = VALOR". Para ejecutar un comando, se escribe seguido de sus argumentos. Las funciones funcionan de forma identica a los comandos.
+
+ARCHIVO: Sintaxis identida a la terminal, pero cada linea ha de terminar con ";".
+
+# COMPILACION
+
+Compilar con "gcc *.c *.h -o CalculatorBF -Wl,--no-as-needed -ldl -Wall -lm".
+
+Ejecutar con "./CalculatorBF".
