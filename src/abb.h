@@ -2,7 +2,7 @@
 #define ABB_H
 
 #include "stdio.h"
-#include "syntax.h"
+#include "tabla_simbolos.h"
 
 /**
  * Tipo de dato abstracto para arbol binario con clave de

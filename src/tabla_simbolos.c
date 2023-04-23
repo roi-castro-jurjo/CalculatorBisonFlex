@@ -34,7 +34,6 @@ lex_component table_functSearch(char * funct, void * lib){
             table_insert(comp_busqueda);
         }
     }
-    table_print();
     return comp_busqueda;
 }
 
@@ -73,16 +72,16 @@ void table_create(){
     tipoelem inicializacion[] = {
             {CONSTANT, "PI", .value.variable=3.141592653589793},
             {CONSTANT, "e", .value.variable=2.718281828459045},
-            {COMMAND1, "help", .value.pFunction=help},
-            {COMMAND2, "load", .value.pFunction=load},
-            {COMMAND2, "import", .value.pFunction=import_lib},
-            {COMMAND1, "stable", .value.pFunction=show_table},
-            {COMMAND1, "sws", .value.pFunction=show_ws},
-            {COMMAND1, "clear", .value.pFunction=clear},
-            {COMMAND1, "clearws", .value.pFunction=clear_ws},
-            {COMMAND1, "quit", .value.pFunction=quit},
-            {COMMAND2, "from", .value.pFunction=import_lib},
-            {COMMAND2, "use"},
+            {COMMAND, "help", .value.pFunction=help},
+            {LOAD_FILE, "load", .value.pFunction=load},
+            {LOAD_FILE, "import", .value.pFunction=import_lib},
+            {COMMAND, "stable", .value.pFunction=show_table},
+            {COMMAND, "sws", .value.pFunction=show_ws},
+            {COMMAND, "clear", .value.pFunction=clear},
+            {COMMAND, "clearws", .value.pFunction=clear_ws},
+            {COMMAND, "quit", .value.pFunction=quit},
+            {FROM, "from", .value.pFunction=import_lib},
+            {USE, "use"},
     };
 
     for (int i = 0; i < (sizeof(inicializacion) / sizeof(tipoelem)); i++) {
@@ -104,8 +103,5 @@ void table_print(){
     printf("╚════════════╩════════════╩═══════════╝\n\n");
 }
 
-void table_search(){
-    printf("Falta por implementar table_search() en tabla_simbolos.c\n");
-}
 
 

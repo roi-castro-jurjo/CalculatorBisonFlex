@@ -40,7 +40,6 @@ void crear(abb *A) {
 
 void destruir(abb *A) {
     if (*A != NULL) {
-        printf("Entramos a destruir %s\n", (*A)->info.lex);
         destruir(&(*A)->izq);
         destruir(&(*A)->der);
         free((*A)->info.lex);
@@ -134,7 +133,7 @@ void print(abb A){
         } else if (aux.lex_comp == FUNCTION){
             printf("╠════════════╬════════════╬═══════════╣\n");
             printf("║  FUNCTION  ║ %-10s ║ NOT VALUE ║\n", aux.lex);
-        } else if (aux.lex_comp == COMMAND1 || aux.lex_comp == COMMAND2){
+        } else if (aux.lex_comp == LOAD_FILE || aux.lex_comp == FROM || aux.lex_comp == USE){
             printf("╠════════════╬════════════╬═══════════╣\n");
             printf("║  COMMAND   ║ %-10s ║ NOT VALUE ║\n", aux.lex);
         } else if (aux.lex_comp == LIBRARY){

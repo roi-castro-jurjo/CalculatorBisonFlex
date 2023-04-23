@@ -6,7 +6,6 @@
 #include "lex.yy.h"
 #include "error.h"
 #include "syntax.tab.h"
-#include "syntax.h"
 #include "tabla_simbolos.h"
 #include <stdlib.h>
 #include <stdio.h>

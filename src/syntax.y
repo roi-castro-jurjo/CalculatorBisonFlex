@@ -37,8 +37,10 @@ double set_nan();
 %token <string> CONSTANT
 %token <string> VARIABLE
 %token <string> FUNCTION
-%token <string> COMMAND1
-%token <string> COMMAND2
+%token <string> COMMAND
+%token <string> LOAD_FILE
+%token <string> FROM
+%token <string> USE
 %token <string> LIBRARY
 %token <string> SOURCE_FILE
 
@@ -64,7 +66,6 @@ line:         '\n'                      {
                                             PRINT_PROMPT
                                         }
             | expression ';' '\n'       {
-                                            printf("\n%lf", $1);
                                             PRINT_PROMPT
 
                                         }
@@ -73,7 +74,6 @@ line:         '\n'                      {
                                             PRINT_PROMPT
                                         }
             | assign ';' '\n'           {
-                                            printf("\n%lf", $1);
                                             PRINT_PROMPT
                                         }
             | command '\n'              {
@@ -87,7 +87,6 @@ line:         '\n'                      {
                                             PRINT_PROMPT
                                         }
             | function ';' '\n'         {
-                                            printf("\n%lf", $1);
                                             PRINT_PROMPT
                                         }
 ;
@@ -102,9 +101,9 @@ expression:   NUMBER
                                                 component = table_lexSearch($1);
                                                 if (component.lex != NULL){
                                                     $$ = component.value.variable;
+
                                                 } else{
                                                     error_show(UNDEFINED_VARIABLE);
-                                                    $$ = set_nan();
                                                 }
 
                                                 free($1);
@@ -181,64 +180,64 @@ assign:       VARIABLE '=' expression       {
                                             }
             | CONSTANT '=' expression       {
                                                 error_show(ASSIGN_CONSTANT);
-                                                $$ = set_nan();
                                                 free($1);
                                             }
             | CONSTANT '=' function         {
                                                 error_show(ASSIGN_CONSTANT);
-                                                $$ = set_nan();
+                                                free($1);
+                                            }
+            | CONSTANT '=' command         {
+                                                error_show(ASSIGN_CONSTANT);
                                                 free($1);
                                             }
             | NUMBER '=' expression         {
                                                 error_show(SYNTAX_ERROR);
-                                                $$ = set_nan();
                                             }
 ;
 
-command:      COMMAND1                      {
+command:      COMMAND                      {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
                                             }
-            | COMMAND1 '(' ')'              {
+            | COMMAND '(' ')'              {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction();
                                                 free($1);
                                              }
-            | COMMAND1 '(' expression ')'    {
+            | COMMAND '(' expression ')'    {
                                                 error_show(SYNTAX_ERROR);
                                                 $$ = set_nan();
                                              }
-            | COMMAND2 expression            {
+            | LOAD_FILE expression            {
                                                 error_show(BAD_SOURCE_FILE);
                                                 $$ = set_nan();
                                                 free($1);
                                              }
-            | COMMAND2                       {
+            | LOAD_FILE                       {
                                                 error_show(BAD_SOURCE_FILE);
                                                 $$ = set_nan();
                                                 free($1);
                                              }
-            | COMMAND2 '(' ')'               {
+            | LOAD_FILE '(' ')'               {
                                                 error_show(BAD_SOURCE_FILE);
                                                 $$ = set_nan();
                                                 free($1);
                                              }
-            | COMMAND2 SOURCE_FILE           {
+            | LOAD_FILE SOURCE_FILE           {
                                                 component = table_lexSearch($1);
                                                 component.value.pFunction($2);
                                                 free($1);
                                                 free($2);
                                              }
-            | COMMAND2 '(' SOURCE_FILE ')'   {
+            | LOAD_FILE '(' SOURCE_FILE ')'   {
                                                  component = table_lexSearch($1);
                                                  component.value.pFunction($3);
                                                  free($1);
                                                  free($3);
                                               }
-            | COMMAND2 LIBRARY COMMAND2 VARIABLE    {
+            | FROM LIBRARY USE VARIABLE    {
                                                         component = table_lexSearch($2);
-
                                                         table_functSearch( $4, component.value.lib);
 
                                                         free($1);
@@ -246,7 +245,7 @@ command:      COMMAND1                      {
                                                         free($3);
                                                         free($4);
                                                     }
-            | COMMAND2 VARIABLE COMMAND2 VARIABLE    {
+            | FROM VARIABLE USE VARIABLE    {
                                                         error_show(LIBRARY_NOT_FOUND);
 
                                                         free($1);
@@ -254,6 +253,17 @@ command:      COMMAND1                      {
                                                         free($3);
                                                         free($4);
                                                     }
+            | FROM SOURCE_FILE USE VARIABLE    {
+                                                component = table_lexSearch($1);
+                                                component.value.pFunction($2);
+                                                component = table_lexSearch($2);
+                                                table_functSearch( $4, component.value.lib);
+
+                                                free($1);
+                                                free($2);
+                                                free($3);
+                                                free($4);
+                                            }
 ;
 
 function:     LIBRARY '/' VARIABLE '(' expression ')'   {

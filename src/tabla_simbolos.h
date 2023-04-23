@@ -2,7 +2,16 @@
 #ifndef DCOMPILER_TABLA_SIMBOLOS_H
 #define DCOMPILER_TABLA_SIMBOLOS_H
 
-#include "syntax.h"
+typedef struct {
+    int lex_comp;
+    char *lex;
+    union {
+        double variable;
+        double (*pFunction)();
+        void *lib;
+    } value;
+} lex_component;
+
 #include "syntax.tab.h"
 
 lex_component table_lexSearch(char * lexeme);
