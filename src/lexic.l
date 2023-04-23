@@ -69,6 +69,7 @@ FILE        ({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+|(\/({LETTER}|{DIGIT})*)*
                 setReadingScript(0);
                 fclose(yyin);
                 yyrestart(stdin);
+                printf("\n>> ");
             }
 
 
