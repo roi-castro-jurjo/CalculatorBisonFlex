@@ -385,8 +385,8 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
         4,    5,    6,    4,    7,    8,    9,   10,   10,   10,
-       10,   10,   10,   10,   10,   10,   10,    1,    4,    1,
-       11,    1,    1,    1,   12,   12,   12,   12,   12,   12,
+       10,   10,   10,   10,   10,   10,   10,    1,    4,   11,
+       11,   11,    1,    1,   12,   12,   12,   12,   12,   12,
        12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
        12,   12,   12,   12,   12,   12,   12,   12,   12,   12,
         1,    1,    1,   11,   13,    1,   12,   12,   12,   12,
@@ -527,8 +527,8 @@ char *yytext;
 #include "tabla_simbolos.h"
 #include "error.h"
 #include "syntax.tab.h"
+#line 531 "lex.yy.c"
 #line 532 "lex.yy.c"
-#line 533 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -745,10 +745,10 @@ YY_DECL
 		}
 
 	{
-#line 35 "lexic.l"
+#line 34 "lexic.l"
 
 
-#line 753 "lex.yy.c"
+#line 752 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -807,7 +807,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 37 "lexic.l"
+#line 36 "lexic.l"
 {
                 yylval.string = malloc(strlen(yytext));
                 strcpy(yylval.string, yytext);
@@ -823,7 +823,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 51 "lexic.l"
+#line 50 "lexic.l"
 {
                 yylval.number = atof(yytext);
                 return NUMBER;
@@ -831,7 +831,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 57 "lexic.l"
+#line 56 "lexic.l"
 {
                 yylval.string = malloc(strlen(yytext));
                 strcpy(yylval.string, yytext);
@@ -841,13 +841,13 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 64 "lexic.l"
+#line 63 "lexic.l"
 {
                 return (int) *yytext;
             }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 69 "lexic.l"
+#line 68 "lexic.l"
 {
                 setReadingScript(0);
                 fclose(yyin);
@@ -856,7 +856,7 @@ case YY_STATE_EOF(INITIAL):
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 76 "lexic.l"
+#line 75 "lexic.l"
 {
                 int next_char;
                 // Establecemos un contador de /+ para abarcar correctamente todos los comentarios anidados
@@ -883,28 +883,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 99 "lexic.l"
+#line 98 "lexic.l"
 
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 100 "lexic.l"
+#line 99 "lexic.l"
 
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 102 "lexic.l"
+#line 101 "lexic.l"
 {
                 error_show(LEXICAL_ERROR);
             }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 106 "lexic.l"
+#line 105 "lexic.l"
 ECHO;
 	YY_BREAK
-#line 909 "lex.yy.c"
+#line 908 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1907,9 +1907,9 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 106 "lexic.l"
+#line 105 "lexic.l"
 
 
  void yyerror (char const *s) {
-   fprintf (stderr, "%s\n", s);
+   fprintf(stderr, "SYNTAX ERROR: %s\n", s);
  }

@@ -1,0 +1,1369 @@
+Grammar
+
+    0 $accept: start $end
+
+    1 start: %empty
+    2      | start line
+
+    3 line: '\n'
+    4     | expression '\n'
+    5     | expression ';' '\n'
+    6     | assign '\n'
+    7     | assign ';' '\n'
+    8     | command '\n'
+    9     | command ';' '\n'
+   10     | function '\n'
+   11     | function ';' '\n'
+   12     | comparison_expression '\n'
+   13     | comparison_expression ';' '\n'
+
+   14 expression: NUMBER
+   15           | CONSTANT
+   16           | VARIABLE
+   17           | '-' expression
+   18           | expression '+' expression
+   19           | expression '-' expression
+   20           | expression '*' expression
+   21           | expression '/' expression
+   22           | expression '%' expression
+   23           | expression '^' expression
+   24           | '(' expression ')'
+
+   25 comparison_expression: expression '<' expression
+   26                      | expression '>' expression
+
+   27 assign: VARIABLE '=' expression
+   28       | VARIABLE '=' function
+   29       | CONSTANT '=' expression
+   30       | CONSTANT '=' function
+   31       | CONSTANT '=' command
+   32       | NUMBER '=' expression
+
+   33 command: COMMAND
+   34        | COMMAND '(' ')'
+   35        | COMMAND '(' expression ')'
+   36        | LOAD_FILE expression
+   37        | LOAD_FILE
+   38        | LOAD_FILE '(' ')'
+   39        | LOAD_FILE SOURCE_FILE
+   40        | LOAD_FILE '(' SOURCE_FILE ')'
+   41        | FROM LIBRARY USE VARIABLE
+   42        | FROM VARIABLE USE VARIABLE
+   43        | FROM SOURCE_FILE USE VARIABLE
+
+   44 function: LIBRARY '/' VARIABLE '(' expression ')'
+   45         | LIBRARY '/' FUNCTION '(' expression ')'
+   46         | LIBRARY '/' VARIABLE '(' expression ',' expression ')'
+   47         | FUNCTION '(' expression ')'
+   48         | LIBRARY '/' VARIABLE '(' ')'
+   49         | expression '(' expression ')'
+   50         | expression '(' expression ',' expression ')'
+   51         | expression '(' ')'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '\n' (10) 3 4 5 6 7 8 9 10 11 12 13
+    '%' (37) 22
+    '(' (40) 24 34 35 38 40 44 45 46 47 48 49 50 51
+    ')' (41) 24 34 35 38 40 44 45 46 47 48 49 50 51
+    '*' (42) 20
+    '+' (43) 18
+    ',' (44) 46 50
+    '-' (45) 17 19
+    '/' (47) 21 44 45 46 48
+    ';' (59) 5 7 9 11 13
+    '<' (60) 25
+    '=' (61) 27 28 29 30 31 32
+    '>' (62) 26
+    '^' (94) 23
+    error (256)
+    NUMBER <number> (258) 14 32
+    CONSTANT <string> (259) 15 29 30 31
+    VARIABLE <string> (260) 16 27 28 41 42 43 44 46 48
+    FUNCTION <string> (261) 45 47
+    COMMAND <string> (262) 33 34 35
+    LOAD_FILE <string> (263) 36 37 38 39 40
+    FROM <string> (264) 41 42 43
+    USE <string> (265) 41 42 43
+    LIBRARY <string> (266) 41 44 45 46 48
+    SOURCE_FILE <string> (267) 39 40 43
+    NEG (268)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (28)
+        on left: 0
+    start (29)
+        on left: 1 2
+        on right: 0 2
+    line (30)
+        on left: 3 4 5 6 7 8 9 10 11 12 13
+        on right: 2
+    expression <number> (31)
+        on left: 14 15 16 17 18 19 20 21 22 23 24
+        on right: 4 5 17 18 19 20 21 22 23 24 25 26 27 29 32 35 36 44 45 46 47 49 50 51
+    comparison_expression <number> (32)
+        on left: 25 26
+        on right: 12 13
+    assign <number> (33)
+        on left: 27 28 29 30 31 32
+        on right: 6 7
+    command <number> (34)
+        on left: 33 34 35 36 37 38 39 40 41 42 43
+        on right: 8 9 31
+    function <number> (35)
+        on left: 44 45 46 47 48 49 50 51
+        on right: 10 11 28 30
+
+
+State 0
+
+    0 $accept: . start $end
+
+    $default  reduce using rule 1 (start)
+
+    start  go to state 1
+
+
+State 1
+
+    0 $accept: start . $end
+    2 start: start . line
+
+    $end       shift, and go to state 2
+    NUMBER     shift, and go to state 3
+    CONSTANT   shift, and go to state 4
+    VARIABLE   shift, and go to state 5
+    FUNCTION   shift, and go to state 6
+    COMMAND    shift, and go to state 7
+    LOAD_FILE  shift, and go to state 8
+    FROM       shift, and go to state 9
+    LIBRARY    shift, and go to state 10
+    '-'        shift, and go to state 11
+    '\n'       shift, and go to state 12
+    '('        shift, and go to state 13
+
+    line                   go to state 14
+    expression             go to state 15
+    comparison_expression  go to state 16
+    assign                 go to state 17
+    command                go to state 18
+    function               go to state 19
+
+
+State 2
+
+    0 $accept: start $end .
+
+    $default  accept
+
+
+State 3
+
+   14 expression: NUMBER .
+   32 assign: NUMBER . '=' expression
+
+    '='  shift, and go to state 20
+
+    $default  reduce using rule 14 (expression)
+
+
+State 4
+
+   15 expression: CONSTANT .
+   29 assign: CONSTANT . '=' expression
+   30       | CONSTANT . '=' function
+   31       | CONSTANT . '=' command
+
+    '='  shift, and go to state 21
+
+    $default  reduce using rule 15 (expression)
+
+
+State 5
+
+   16 expression: VARIABLE .
+   27 assign: VARIABLE . '=' expression
+   28       | VARIABLE . '=' function
+
+    '='  shift, and go to state 22
+
+    $default  reduce using rule 16 (expression)
+
+
+State 6
+
+   47 function: FUNCTION . '(' expression ')'
+
+    '('  shift, and go to state 23
+
+
+State 7
+
+   33 command: COMMAND .
+   34        | COMMAND . '(' ')'
+   35        | COMMAND . '(' expression ')'
+
+    '('  shift, and go to state 24
+
+    $default  reduce using rule 33 (command)
+
+
+State 8
+
+   36 command: LOAD_FILE . expression
+   37        | LOAD_FILE .
+   38        | LOAD_FILE . '(' ')'
+   39        | LOAD_FILE . SOURCE_FILE
+   40        | LOAD_FILE . '(' SOURCE_FILE ')'
+
+    NUMBER       shift, and go to state 25
+    CONSTANT     shift, and go to state 26
+    VARIABLE     shift, and go to state 27
+    SOURCE_FILE  shift, and go to state 28
+    '-'          shift, and go to state 11
+    '('          shift, and go to state 29
+
+    $default  reduce using rule 37 (command)
+
+    expression  go to state 30
+
+
+State 9
+
+   41 command: FROM . LIBRARY USE VARIABLE
+   42        | FROM . VARIABLE USE VARIABLE
+   43        | FROM . SOURCE_FILE USE VARIABLE
+
+    VARIABLE     shift, and go to state 31
+    LIBRARY      shift, and go to state 32
+    SOURCE_FILE  shift, and go to state 33
+
+
+State 10
+
+   44 function: LIBRARY . '/' VARIABLE '(' expression ')'
+   45         | LIBRARY . '/' FUNCTION '(' expression ')'
+   46         | LIBRARY . '/' VARIABLE '(' expression ',' expression ')'
+   48         | LIBRARY . '/' VARIABLE '(' ')'
+
+    '/'  shift, and go to state 34
+
+
+State 11
+
+   17 expression: '-' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 35
+
+
+State 12
+
+    3 line: '\n' .
+
+    $default  reduce using rule 3 (line)
+
+
+State 13
+
+   24 expression: '(' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 36
+
+
+State 14
+
+    2 start: start line .
+
+    $default  reduce using rule 2 (start)
+
+
+State 15
+
+    4 line: expression . '\n'
+    5     | expression . ';' '\n'
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   25 comparison_expression: expression . '<' expression
+   26                      | expression . '>' expression
+   49 function: expression . '(' expression ')'
+   50         | expression . '(' expression ',' expression ')'
+   51         | expression . '(' ')'
+
+    '-'   shift, and go to state 37
+    '+'   shift, and go to state 38
+    '*'   shift, and go to state 39
+    '/'   shift, and go to state 40
+    '%'   shift, and go to state 41
+    '^'   shift, and go to state 42
+    '\n'  shift, and go to state 43
+    ';'   shift, and go to state 44
+    '('   shift, and go to state 45
+    '<'   shift, and go to state 46
+    '>'   shift, and go to state 47
+
+
+State 16
+
+   12 line: comparison_expression . '\n'
+   13     | comparison_expression . ';' '\n'
+
+    '\n'  shift, and go to state 48
+    ';'   shift, and go to state 49
+
+
+State 17
+
+    6 line: assign . '\n'
+    7     | assign . ';' '\n'
+
+    '\n'  shift, and go to state 50
+    ';'   shift, and go to state 51
+
+
+State 18
+
+    8 line: command . '\n'
+    9     | command . ';' '\n'
+
+    '\n'  shift, and go to state 52
+    ';'   shift, and go to state 53
+
+
+State 19
+
+   10 line: function . '\n'
+   11     | function . ';' '\n'
+
+    '\n'  shift, and go to state 54
+    ';'   shift, and go to state 55
+
+
+State 20
+
+   32 assign: NUMBER '=' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 56
+
+
+State 21
+
+   29 assign: CONSTANT '=' . expression
+   30       | CONSTANT '=' . function
+   31       | CONSTANT '=' . command
+
+    NUMBER     shift, and go to state 25
+    CONSTANT   shift, and go to state 26
+    VARIABLE   shift, and go to state 27
+    FUNCTION   shift, and go to state 6
+    COMMAND    shift, and go to state 7
+    LOAD_FILE  shift, and go to state 8
+    FROM       shift, and go to state 9
+    LIBRARY    shift, and go to state 10
+    '-'        shift, and go to state 11
+    '('        shift, and go to state 13
+
+    expression  go to state 57
+    command     go to state 58
+    function    go to state 59
+
+
+State 22
+
+   27 assign: VARIABLE '=' . expression
+   28       | VARIABLE '=' . function
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    FUNCTION  shift, and go to state 6
+    LIBRARY   shift, and go to state 10
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 60
+    function    go to state 61
+
+
+State 23
+
+   47 function: FUNCTION '(' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 62
+
+
+State 24
+
+   34 command: COMMAND '(' . ')'
+   35        | COMMAND '(' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+    ')'       shift, and go to state 63
+
+    expression  go to state 64
+
+
+State 25
+
+   14 expression: NUMBER .
+
+    $default  reduce using rule 14 (expression)
+
+
+State 26
+
+   15 expression: CONSTANT .
+
+    $default  reduce using rule 15 (expression)
+
+
+State 27
+
+   16 expression: VARIABLE .
+
+    $default  reduce using rule 16 (expression)
+
+
+State 28
+
+   39 command: LOAD_FILE SOURCE_FILE .
+
+    $default  reduce using rule 39 (command)
+
+
+State 29
+
+   24 expression: '(' . expression ')'
+   38 command: LOAD_FILE '(' . ')'
+   40        | LOAD_FILE '(' . SOURCE_FILE ')'
+
+    NUMBER       shift, and go to state 25
+    CONSTANT     shift, and go to state 26
+    VARIABLE     shift, and go to state 27
+    SOURCE_FILE  shift, and go to state 65
+    '-'          shift, and go to state 11
+    '('          shift, and go to state 13
+    ')'          shift, and go to state 66
+
+    expression  go to state 36
+
+
+State 30
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   36 command: LOAD_FILE expression .
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 36 (command)
+
+
+State 31
+
+   42 command: FROM VARIABLE . USE VARIABLE
+
+    USE  shift, and go to state 67
+
+
+State 32
+
+   41 command: FROM LIBRARY . USE VARIABLE
+
+    USE  shift, and go to state 68
+
+
+State 33
+
+   43 command: FROM SOURCE_FILE . USE VARIABLE
+
+    USE  shift, and go to state 69
+
+
+State 34
+
+   44 function: LIBRARY '/' . VARIABLE '(' expression ')'
+   45         | LIBRARY '/' . FUNCTION '(' expression ')'
+   46         | LIBRARY '/' . VARIABLE '(' expression ',' expression ')'
+   48         | LIBRARY '/' . VARIABLE '(' ')'
+
+    VARIABLE  shift, and go to state 70
+    FUNCTION  shift, and go to state 71
+
+
+State 35
+
+   17 expression: '-' expression .
+   18           | expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 17 (expression)
+
+
+State 36
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   24           | '(' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 72
+
+
+State 37
+
+   19 expression: expression '-' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 73
+
+
+State 38
+
+   18 expression: expression '+' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 74
+
+
+State 39
+
+   20 expression: expression '*' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 75
+
+
+State 40
+
+   21 expression: expression '/' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 76
+
+
+State 41
+
+   22 expression: expression '%' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 77
+
+
+State 42
+
+   23 expression: expression '^' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 78
+
+
+State 43
+
+    4 line: expression '\n' .
+
+    $default  reduce using rule 4 (line)
+
+
+State 44
+
+    5 line: expression ';' . '\n'
+
+    '\n'  shift, and go to state 79
+
+
+State 45
+
+   49 function: expression '(' . expression ')'
+   50         | expression '(' . expression ',' expression ')'
+   51         | expression '(' . ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+    ')'       shift, and go to state 80
+
+    expression  go to state 81
+
+
+State 46
+
+   25 comparison_expression: expression '<' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 82
+
+
+State 47
+
+   26 comparison_expression: expression '>' . expression
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 83
+
+
+State 48
+
+   12 line: comparison_expression '\n' .
+
+    $default  reduce using rule 12 (line)
+
+
+State 49
+
+   13 line: comparison_expression ';' . '\n'
+
+    '\n'  shift, and go to state 84
+
+
+State 50
+
+    6 line: assign '\n' .
+
+    $default  reduce using rule 6 (line)
+
+
+State 51
+
+    7 line: assign ';' . '\n'
+
+    '\n'  shift, and go to state 85
+
+
+State 52
+
+    8 line: command '\n' .
+
+    $default  reduce using rule 8 (line)
+
+
+State 53
+
+    9 line: command ';' . '\n'
+
+    '\n'  shift, and go to state 86
+
+
+State 54
+
+   10 line: function '\n' .
+
+    $default  reduce using rule 10 (line)
+
+
+State 55
+
+   11 line: function ';' . '\n'
+
+    '\n'  shift, and go to state 87
+
+
+State 56
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   32 assign: NUMBER '=' expression .
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 32 (assign)
+
+
+State 57
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   29 assign: CONSTANT '=' expression .
+   49 function: expression . '(' expression ')'
+   50         | expression . '(' expression ',' expression ')'
+   51         | expression . '(' ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    '('  shift, and go to state 45
+
+    $default  reduce using rule 29 (assign)
+
+
+State 58
+
+   31 assign: CONSTANT '=' command .
+
+    $default  reduce using rule 31 (assign)
+
+
+State 59
+
+   30 assign: CONSTANT '=' function .
+
+    $default  reduce using rule 30 (assign)
+
+
+State 60
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   27 assign: VARIABLE '=' expression .
+   49 function: expression . '(' expression ')'
+   50         | expression . '(' expression ',' expression ')'
+   51         | expression . '(' ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    '('  shift, and go to state 45
+
+    $default  reduce using rule 27 (assign)
+
+
+State 61
+
+   28 assign: VARIABLE '=' function .
+
+    $default  reduce using rule 28 (assign)
+
+
+State 62
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   47 function: FUNCTION '(' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 88
+
+
+State 63
+
+   34 command: COMMAND '(' ')' .
+
+    $default  reduce using rule 34 (command)
+
+
+State 64
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   35 command: COMMAND '(' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 89
+
+
+State 65
+
+   40 command: LOAD_FILE '(' SOURCE_FILE . ')'
+
+    ')'  shift, and go to state 90
+
+
+State 66
+
+   38 command: LOAD_FILE '(' ')' .
+
+    $default  reduce using rule 38 (command)
+
+
+State 67
+
+   42 command: FROM VARIABLE USE . VARIABLE
+
+    VARIABLE  shift, and go to state 91
+
+
+State 68
+
+   41 command: FROM LIBRARY USE . VARIABLE
+
+    VARIABLE  shift, and go to state 92
+
+
+State 69
+
+   43 command: FROM SOURCE_FILE USE . VARIABLE
+
+    VARIABLE  shift, and go to state 93
+
+
+State 70
+
+   44 function: LIBRARY '/' VARIABLE . '(' expression ')'
+   46         | LIBRARY '/' VARIABLE . '(' expression ',' expression ')'
+   48         | LIBRARY '/' VARIABLE . '(' ')'
+
+    '('  shift, and go to state 94
+
+
+State 71
+
+   45 function: LIBRARY '/' FUNCTION . '(' expression ')'
+
+    '('  shift, and go to state 95
+
+
+State 72
+
+   24 expression: '(' expression ')' .
+
+    $default  reduce using rule 24 (expression)
+
+
+State 73
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   19           | expression '-' expression .
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 19 (expression)
+
+
+State 74
+
+   18 expression: expression . '+' expression
+   18           | expression '+' expression .
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 18 (expression)
+
+
+State 75
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   20           | expression '*' expression .
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 20 (expression)
+
+
+State 76
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   21           | expression '/' expression .
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 21 (expression)
+
+
+State 77
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   22           | expression '%' expression .
+   23           | expression . '^' expression
+
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 22 (expression)
+
+
+State 78
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   23           | expression '^' expression .
+
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 23 (expression)
+
+
+State 79
+
+    5 line: expression ';' '\n' .
+
+    $default  reduce using rule 5 (line)
+
+
+State 80
+
+   51 function: expression '(' ')' .
+
+    $default  reduce using rule 51 (function)
+
+
+State 81
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   49 function: expression '(' expression . ')'
+   50         | expression '(' expression . ',' expression ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 96
+    ','  shift, and go to state 97
+
+
+State 82
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   25 comparison_expression: expression '<' expression .
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 25 (comparison_expression)
+
+
+State 83
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   26 comparison_expression: expression '>' expression .
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+
+    $default  reduce using rule 26 (comparison_expression)
+
+
+State 84
+
+   13 line: comparison_expression ';' '\n' .
+
+    $default  reduce using rule 13 (line)
+
+
+State 85
+
+    7 line: assign ';' '\n' .
+
+    $default  reduce using rule 7 (line)
+
+
+State 86
+
+    9 line: command ';' '\n' .
+
+    $default  reduce using rule 9 (line)
+
+
+State 87
+
+   11 line: function ';' '\n' .
+
+    $default  reduce using rule 11 (line)
+
+
+State 88
+
+   47 function: FUNCTION '(' expression ')' .
+
+    $default  reduce using rule 47 (function)
+
+
+State 89
+
+   35 command: COMMAND '(' expression ')' .
+
+    $default  reduce using rule 35 (command)
+
+
+State 90
+
+   40 command: LOAD_FILE '(' SOURCE_FILE ')' .
+
+    $default  reduce using rule 40 (command)
+
+
+State 91
+
+   42 command: FROM VARIABLE USE VARIABLE .
+
+    $default  reduce using rule 42 (command)
+
+
+State 92
+
+   41 command: FROM LIBRARY USE VARIABLE .
+
+    $default  reduce using rule 41 (command)
+
+
+State 93
+
+   43 command: FROM SOURCE_FILE USE VARIABLE .
+
+    $default  reduce using rule 43 (command)
+
+
+State 94
+
+   44 function: LIBRARY '/' VARIABLE '(' . expression ')'
+   46         | LIBRARY '/' VARIABLE '(' . expression ',' expression ')'
+   48         | LIBRARY '/' VARIABLE '(' . ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+    ')'       shift, and go to state 98
+
+    expression  go to state 99
+
+
+State 95
+
+   45 function: LIBRARY '/' FUNCTION '(' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 100
+
+
+State 96
+
+   49 function: expression '(' expression ')' .
+
+    $default  reduce using rule 49 (function)
+
+
+State 97
+
+   50 function: expression '(' expression ',' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 101
+
+
+State 98
+
+   48 function: LIBRARY '/' VARIABLE '(' ')' .
+
+    $default  reduce using rule 48 (function)
+
+
+State 99
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   44 function: LIBRARY '/' VARIABLE '(' expression . ')'
+   46         | LIBRARY '/' VARIABLE '(' expression . ',' expression ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 102
+    ','  shift, and go to state 103
+
+
+State 100
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   45 function: LIBRARY '/' FUNCTION '(' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 104
+
+
+State 101
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   50 function: expression '(' expression ',' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 105
+
+
+State 102
+
+   44 function: LIBRARY '/' VARIABLE '(' expression ')' .
+
+    $default  reduce using rule 44 (function)
+
+
+State 103
+
+   46 function: LIBRARY '/' VARIABLE '(' expression ',' . expression ')'
+
+    NUMBER    shift, and go to state 25
+    CONSTANT  shift, and go to state 26
+    VARIABLE  shift, and go to state 27
+    '-'       shift, and go to state 11
+    '('       shift, and go to state 13
+
+    expression  go to state 106
+
+
+State 104
+
+   45 function: LIBRARY '/' FUNCTION '(' expression ')' .
+
+    $default  reduce using rule 45 (function)
+
+
+State 105
+
+   50 function: expression '(' expression ',' expression ')' .
+
+    $default  reduce using rule 50 (function)
+
+
+State 106
+
+   18 expression: expression . '+' expression
+   19           | expression . '-' expression
+   20           | expression . '*' expression
+   21           | expression . '/' expression
+   22           | expression . '%' expression
+   23           | expression . '^' expression
+   46 function: LIBRARY '/' VARIABLE '(' expression ',' expression . ')'
+
+    '-'  shift, and go to state 37
+    '+'  shift, and go to state 38
+    '*'  shift, and go to state 39
+    '/'  shift, and go to state 40
+    '%'  shift, and go to state 41
+    '^'  shift, and go to state 42
+    ')'  shift, and go to state 107
+
+
+State 107
+
+   46 function: LIBRARY '/' VARIABLE '(' expression ',' expression ')' .
+
+    $default  reduce using rule 46 (function)

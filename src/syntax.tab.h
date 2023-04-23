@@ -85,5 +85,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 void setReadingScript(int value);
-
 #endif /* !YY_YY_SYNTAX_TAB_H_INCLUDED  */

@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "syntax.h"
 #include "tabla_simbolos.h"
 #include "error.h"
 #include "syntax.tab.h"
@@ -27,7 +26,7 @@ COMMENT     (\/\/[^\n]*)|("/*"([^*]|(\*+[^*/]))*\*+\/)
 
 ID          ((\_|{LETTER})+(\_|{LETTER}|{NUMBER})*)
 
-OPERATOR    [\+\-\*\/\^\=]|[\(\)\,\;]
+OPERATOR    [\+\-\*\/\^\=\<\>]|[\(\)\,\;]
 SPECIAL     {OPERATOR}|{END_LINE}
 
 FILE        ({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+|(\/({LETTER}|{DIGIT})*)*\/({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+
@@ -106,5 +105,5 @@ FILE        ({LETTER}|{DIGIT})+(\.({LETTER}|{DIGIT})+)+|(\/({LETTER}|{DIGIT})*)*
 %%
 
  void yyerror (char const *s) {
-   fprintf (stderr, "%s\n", s);
+   fprintf(stderr, "SYNTAX ERROR: %s\n", s);
  }

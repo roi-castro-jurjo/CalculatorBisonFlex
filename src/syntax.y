@@ -31,6 +31,7 @@ double set_nan();
 %type <number> assign
 %type <number> command
 %type <number> function
+%type <number> comparison_expression
 
 %token <number> NUMBER
 
@@ -89,6 +90,12 @@ line:         '\n'                      {
             | function ';' '\n'         {
                                             PRINT_PROMPT
                                         }
+            | comparison_expression '\n'{
+                                            PRINT_PROMPT
+                                        }
+            | comparison_expression ';' '\n'{
+                                            PRINT_PROMPT
+                                        }
 ;
 
 expression:   NUMBER
@@ -143,6 +150,23 @@ expression:   NUMBER
                                                 $$ = $2;
                                             }
 ;
+
+comparison_expression : expression '<' expression {
+                                                      if ($1 < $3) {
+                                                          printf("true");
+                                                      } else {
+                                                          printf("false");
+                                                      }
+                                                  }
+                      | expression '>' expression {
+                                                      if ($1 > $3) {
+                                                          printf("true");
+                                                      } else {
+                                                          printf("false");
+                                                      }
+                                                  }
+;
+
 
 assign:       VARIABLE '=' expression       {
 
